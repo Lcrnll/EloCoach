@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#0f1117">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>ÉloCoach</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0f1117;--surface:#181c27;--surface2:#1e2335;--border:#2a3050;
+    --accent:#e8ff47;--accent2:#47c2ff;--accent3:#ff6b6b;--accent4:#b47fff;
+    --text:#f0f2ff;--text2:#8b91b0;--text3:#5a6080;
+    --radius:16px;--radius-sm:10px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;max-width:420px;margin:0 auto;overflow-x:hidden;}
+  h1,h2,h3{font-family:'Syne',sans-serif;}
+  .nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:420px;background:var(--surface);border-top:1px solid var(--border);display:flex;z-index:100;padding:8px 0 16px;}
+  .nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:none;cursor:pointer;color:var(--text3);font-family:'DM Sans',sans-serif;font-size:10px;transition:color 0.2s;padding:6px 0;}
+  .nav-btn.active{color:var(--accent);}
+  .nav-btn svg{width:22px;height:22px;}
+  .screen{display:none;padding:24px 20px 100px;min-height:100vh;}
+  .screen.active{display:block;}
+  .header{margin-bottom:28px;}
+  .header-tag{font-size:11px;color:var(--accent);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;font-weight:600;}
+  .header h1{font-size:28px;font-weight:800;line-height:1.1;}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:14px;}
+  .card-label{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;font-weight:600;}
+  .streak-row{display:flex;gap:6px;margin-top:12px;}
+  .streak-day{flex:1;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;font-family:'Syne',sans-serif;}
+  .streak-day.done{background:var(--accent);color:#0f1117;}
+  .streak-day.today{background:var(--surface2);border:1.5px solid var(--accent);color:var(--accent);}
+  .streak-day.empty{background:var(--surface2);color:var(--text3);}
+  .exercise-card{position:relative;overflow:hidden;}
+  .exercise-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));}
+  .ex-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;}
+  .ex-badge{color:#0f1117;font-size:10px;font-weight:700;font-family:'Syne',sans-serif;padding:4px 10px;border-radius:20px;letter-spacing:1px;text-transform:uppercase;background:var(--accent);}
+  .ex-badge.blue{background:var(--accent2);}
+  .ex-badge.red{background:var(--accent3);}
+  .ex-badge.purple{background:var(--accent4);color:#fff;}
+  .ex-check{width:28px;height:28px;border-radius:50%;border:2px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;flex-shrink:0;}
+  .ex-check.done{background:var(--accent);border-color:var(--accent);}
+  .ex-text{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--text);line-height:1.5;margin-bottom:12px;font-style:italic;}
+  .ex-instruction{font-size:13px;color:var(--text2);line-height:1.6;}
+  .ex-instruction strong{color:var(--text);}
+  .timer-area{margin-top:16px;}
+  .timer-display{font-family:'Syne',sans-serif;font-size:42px;font-weight:800;color:var(--accent);text-align:center;margin:10px 0;letter-spacing:-1px;}
+  .timer-btn{width:100%;padding:12px;border-radius:var(--radius-sm);border:none;cursor:pointer;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase;transition:all 0.2s;}
+  .timer-btn.start{background:var(--accent);color:#0f1117;}
+  .timer-btn.stop{background:var(--accent3);color:#fff;}
+  .timer-btn.reset{background:var(--surface2);color:var(--text2);margin-top:8px;}
+  .debit-text{font-size:15px;line-height:1.8;color:var(--text);background:var(--surface2);border-radius:var(--radius-sm);padding:16px;margin:14px 0;border-left:3px solid var(--accent2);}
+  .debit-result{display:none;align-items:center;gap:10px;background:var(--surface2);border-radius:var(--radius-sm);padding:14px 16px;margin-top:12px;}
+  .debit-result.show{display:flex;}
+  .debit-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;}
+  .debit-dot.fast{background:var(--accent3);}
+  .debit-dot.ok{background:var(--accent);}
+  .debit-dot.slow{background:var(--accent2);}
+  .debit-result-text{font-size:13px;color:var(--text2);}
+  .debit-result-text strong{color:var(--text);display:block;font-size:15px;margin-bottom:2px;}
+  .article-meta{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+  .article-tag{font-size:11px;background:var(--surface2);color:var(--accent2);padding:4px 10px;border-radius:20px;font-weight:600;}
+  .article-body{font-size:14px;color:var(--text2);line-height:1.8;max-height:200px;overflow:hidden;position:relative;transition:max-height 0.4s ease;}
+  .article-body.expanded{max-height:2000px;}
+  .article-fade{position:absolute;bottom:0;left:0;right:0;height:60px;background:linear-gradient(transparent,var(--surface));pointer-events:none;transition:opacity 0.3s;}
+  .article-fade.hidden{opacity:0;}
+  .read-btn{width:100%;margin-top:12px;padding:10px;border-radius:var(--radius-sm);background:var(--surface2);border:1px solid var(--border);color:var(--text2);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;}
+  .score-row{display:flex;gap:8px;margin:12px 0;}
+  .score-btn{flex:1;padding:10px 6px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:none;color:var(--text2);font-family:'Syne',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all 0.15s;text-align:center;}
+  .score-btn.selected{border-color:var(--accent);background:rgba(232,255,71,0.1);color:var(--accent);}
+  .journal-textarea{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;resize:none;line-height:1.6;outline:none;transition:border-color 0.2s;}
+  .journal-textarea:focus{border-color:var(--accent2);}
+  .journal-textarea::placeholder{color:var(--text3);}
+  .chip-row{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0;}
+  .chip{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;border:1.5px solid var(--border);background:none;color:var(--text2);cursor:pointer;transition:all 0.15s;font-family:'DM Sans',sans-serif;}
+  .chip.selected{border-color:var(--accent3);background:rgba(255,107,107,0.1);color:var(--accent3);}
+  .chip.prog.selected{border-color:var(--accent);background:rgba(232,255,71,0.1);color:var(--accent);}
+  .words-input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color 0.2s;}
+  .words-input:focus{border-color:var(--accent2);}
+  .save-btn{width:100%;padding:14px;border-radius:var(--radius-sm);background:var(--accent);border:none;color:#0f1117;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;margin-top:16px;transition:opacity 0.2s;}
+  .save-btn:active{opacity:0.8;}
+  .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+  .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;}
+  .stat-value{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;}
+  .stat-value.accent{color:var(--accent);}
+  .stat-value.blue{color:var(--accent2);}
+  .stat-value.purple{color:var(--accent4);}
+  .stat-label{font-size:12px;color:var(--text3);margin-top:2px;}
+  .chart-area{position:relative;height:120px;margin:16px 0 8px;}
+  .chart-svg{width:100%;height:100%;}
+  .chart-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--text3);}
+  .word-item{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border);}
+  .word-item:last-child{border-bottom:none;}
+  .word-name{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;}
+  .word-date{font-size:11px;color:var(--text3);}
+  .word-badge{font-size:10px;padding:3px 8px;border-radius:10px;font-weight:600;background:rgba(255,107,107,0.15);color:var(--accent3);}
+  .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--accent);color:#0f1117;padding:12px 24px;border-radius:30px;font-family:'Syne',sans-serif;font-size:13px;font-weight:700;opacity:0;transition:all 0.3s;z-index:200;white-space:nowrap;}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+  .progress-bar-bg{background:var(--surface2);border-radius:4px;height:6px;margin-top:8px;}
+  .progress-bar-fill{height:6px;border-radius:4px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width 0.5s ease;}
+  .section-title{font-family:'Syne',sans-serif;font-size:13px;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin:24px 0 12px;font-weight:600;}
+  .loading-state{text-align:center;padding:20px;color:var(--text3);font-size:14px;}
+  .loading-dot{display:inline-block;animation:blink 1.2s infinite;}
+  .loading-dot:nth-child(2){animation-delay:0.2s;}
+  .loading-dot:nth-child(3){animation-delay:0.4s;}
+  @keyframes blink{0%,80%,100%{opacity:0.2}40%{opacity:1}}
+  .difficulty-bar{display:flex;gap:3px;margin-top:6px;align-items:center;}
+  .difficulty-pip{width:8px;height:8px;border-radius:2px;background:var(--surface2);}
+  .difficulty-pip.filled{background:var(--accent3);}
+  .reload-btn{background:none;border:1px solid var(--border);color:var(--text3);border-radius:20px;padding:4px 12px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;}
+  .bonus-divider{display:flex;align-items:center;gap:12px;margin:24px 0 16px;}
+  .bonus-divider-line{flex:1;height:1px;background:var(--border);}
+  .bonus-divider-label{font-family:'Syne',sans-serif;font-size:11px;color:var(--accent4);letter-spacing:2px;text-transform:uppercase;font-weight:700;white-space:nowrap;}
+  .add-bonus-btn{width:100%;padding:14px;border-radius:var(--radius-sm);background:transparent;border:1.5px dashed var(--accent4);color:var(--accent4);font-family:'Syne',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+  .bonus-session{border:1px solid rgba(180,127,255,0.3);background:rgba(180,127,255,0.04);border-radius:var(--radius);padding:20px;margin-bottom:12px;position:relative;overflow:hidden;}
+  .bonus-session::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent4),var(--accent3));}
+  .bonus-session-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+  .bonus-session-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent4);}
+  .bonus-checks{display:flex;gap:8px;}
+  .bonus-check{width:24px;height:24px;border-radius:50%;border:2px solid rgba(180,127,255,0.4);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
+  .bonus-check.done{background:var(--accent4);border-color:var(--accent4);}
+  .bonus-item{margin-bottom:16px;}
+  .bonus-item:last-child{margin-bottom:0;}
+  .bonus-item-label{font-size:10px;color:var(--accent4);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;margin-bottom:8px;}
+  .bonus-item-text{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:var(--text);font-style:italic;line-height:1.5;}
+  .bonus-item-sub{font-size:12px;color:var(--text3);margin-top:6px;line-height:1.5;}
+  .bonus-item-sub strong{color:var(--text2);}
+</style>
+</head>
+<body>
+
+<div class="screen active" id="screen-home">
+  <div class="header">
+    <div class="header-tag">Semaine 1 — Jour <span id="current-day">1</span></div>
+    <h1>Bonjour,<br>c'est l'heure<br>de pratiquer.</h1>
+    <p id="date-display" style="margin-top:10px;color:var(--text3);font-size:13px;"></p>
+  </div>
+  <div class="card">
+    <div class="card-label">Régularité cette semaine</div>
+    <div class="streak-row" id="streak-row"></div>
+    <div style="margin-top:12px;display:flex;justify-content:space-between;align-items:center;">
+      <span style="font-size:13px;color:var(--text2);">Exercices du jour</span>
+      <span id="ex-count" style="font-family:'Syne',sans-serif;font-weight:700;font-size:16px;color:var(--accent);">0/3</span>
+    </div>
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-fill" style="width:0%"></div></div>
+    <div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center;">
+      <span style="font-size:12px;color:var(--text3);">Sessions bonus aujourd'hui</span>
+      <span id="bonus-count-badge" style="font-family:'Syne',sans-serif;font-weight:700;font-size:14px;color:var(--accent4);">0</span>
+    </div>
+  </div>
+  <div class="card exercise-card">
+    <div class="ex-header">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div class="ex-badge">Articulation</div>
+        <button class="reload-btn" onclick="reloadVirelangues()">↻</button>
+      </div>
+      <div class="ex-check" id="check-0" onclick="toggleCheck(0)"></div>
+    </div>
+    <div id="virelangues-loading" class="loading-state">Génération<span class="loading-dot">.</span><span class="loading-dot">.</span><span class="loading-dot">.</span></div>
+    <div id="virelangues-content" style="display:none;">
+      <div class="ex-text" id="virelangues-text"></div>
+      <div class="ex-instruction">Répète chaque phrase <strong>5 fois</strong>, bouche exagérément ouverte. Lèvres actives.</div>
+    </div>
+  </div>
+  <div class="card exercise-card">
+    <div class="ex-header">
+      <div class="ex-badge blue">Débit</div>
+      <div class="ex-check" id="check-1" onclick="toggleCheck(1)"></div>
+    </div>
+    <div class="ex-instruction" style="margin-bottom:14px;">Lis le texte à voix haute. <strong>1s</strong> à chaque virgule, <strong>2s</strong> à chaque point.</div>
+    <div id="article-loading" class="loading-state">Chargement<span class="loading-dot">.</span><span class="loading-dot">.</span><span class="loading-dot">.</span></div>
+    <div id="article-container" style="display:none;">
+      <div class="article-meta"><span class="article-tag">🏔️ Trail</span><span class="article-tag" id="article-words-tag"></span></div>
+      <div class="article-body" id="article-body"><div class="article-fade" id="article-fade"></div></div>
+      <button class="read-btn" id="read-btn" onclick="toggleArticle()">Lire la suite ↓</button>
+    </div>
+  </div>
+  <div class="card exercise-card">
+    <div class="ex-header">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div class="ex-badge red">Mot difficile</div>
+        <button class="reload-btn" onclick="reloadWord()">↻</button>
+      </div>
+      <div class="ex-check" id="check-2" onclick="toggleCheck(2)"></div>
+    </div>
+    <div id="word-loading" class="loading-state">Génération<span class="loading-dot">.</span><span class="loading-dot">.</span><span class="loading-dot">.</span></div>
+    <div id="word-content" style="display:none;">
+      <div class="ex-text" id="word-of-day" style="font-size:24px;"></div>
+      <div class="difficulty-bar" id="difficulty-bar"></div>
+      <div class="ex-instruction" style="margin-top:14px;">Découpage syllabique inversé :<br><strong id="word-breakdown"></strong><br><br>3 fois lentement, puis 1 fois à vitesse normale.</div>
+    </div>
+  </div>
+  <div class="bonus-divider">
+    <div class="bonus-divider-line"></div>
+    <div class="bonus-divider-label">⚡ Sessions bonus</div>
+    <div class="bonus-divider-line"></div>
+  </div>
+  <div id="bonus-sessions-container"></div>
+  <button class="add-bonus-btn" onclick="addBonusSession()">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    Ajouter une session
+  </button>
+</div>
+
+<div class="screen" id="screen-debit">
+  <div class="header">
+    <div class="header-tag">Test hebdomadaire</div>
+    <h1>Test de<br>débit</h1>
+    <p>70 mots · À faire une fois par semaine</p>
+  </div>
+  <div class="card">
+    <div class="card-label">Texte de référence</div>
+    <div class="debit-text">La communication orale est un art qui s'apprend et se travaille. Beaucoup de personnes pensent qu'il suffit d'avoir des idées claires pour bien s'exprimer, mais ce n'est pas suffisant. La façon dont on articule, dont on respire, dont on module sa voix — tout cela joue un rôle aussi important que le contenu lui-même. Prendre conscience de son rythme naturel est la première étape pour progresser.</div>
+    <div class="timer-area">
+      <div class="timer-display" id="timer-display">00:00</div>
+      <button class="timer-btn start" id="timer-btn" onclick="toggleTimer()">Démarrer</button>
+      <button class="timer-btn reset" onclick="resetTimer()">Réinitialiser</button>
+    </div>
+    <div class="debit-result" id="debit-result">
+      <div class="debit-dot" id="debit-dot"></div>
+      <div class="debit-result-text"><strong id="debit-verdict"></strong><span id="debit-advice"></span></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-label">Score subjectif du jour</div>
+    <div class="score-row" id="quick-score-row">
+      <button class="score-btn" onclick="selectQuickScore(this,1)">😬 1</button>
+      <button class="score-btn" onclick="selectQuickScore(this,2)">😐 2</button>
+      <button class="score-btn" onclick="selectQuickScore(this,3)">🙂 3</button>
+      <button class="score-btn" onclick="selectQuickScore(this,4)">😊 4</button>
+      <button class="score-btn" onclick="selectQuickScore(this,5)">🔥 5</button>
+    </div>
+    <button class="save-btn" onclick="saveDebitEntry()">Enregistrer</button>
+  </div>
+</div>
+
+<div class="screen" id="screen-journal">
+  <div class="header">
+    <div class="header-tag">Bilan quotidien</div>
+    <h1>Journal<br>du jour</h1>
+  </div>
+  <div class="card">
+    <div class="card-label">Score de fluidité</div>
+    <div class="score-row" id="score-row">
+      <button class="score-btn" onclick="selectScore(this,1)">😬 1</button>
+      <button class="score-btn" onclick="selectScore(this,2)">😐 2</button>
+      <button class="score-btn" onclick="selectScore(this,3)">🙂 3</button>
+      <button class="score-btn" onclick="selectScore(this,4)">😊 4</button>
+      <button class="score-btn" onclick="selectScore(this,5)">🔥 5</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-label">Blocages du jour</div>
+    <div class="chip-row" id="blocage-chips">
+      <button class="chip" onclick="toggleChip(this)">Débit trop rapide</button>
+      <button class="chip" onclick="toggleChip(this)">Mots avalés</button>
+      <button class="chip" onclick="toggleChip(this)">Perdu le fil</button>
+      <button class="chip" onclick="toggleChip(this)">Stress / rush</button>
+      <button class="chip" onclick="toggleChip(this)">Effet interview</button>
+      <button class="chip" onclick="toggleChip(this)">Autre</button>
+    </div>
+    <textarea class="journal-textarea" id="blocage-text" rows="3" placeholder="Décris la situation..."></textarea>
+  </div>
+  <div class="card">
+    <div class="card-label">Progrès ressentis</div>
+    <div class="chip-row" id="prog-chips">
+      <button class="chip prog" onclick="toggleChipProg(this)">Mieux articulé</button>
+      <button class="chip prog" onclick="toggleChipProg(this)">Rythme plus posé</button>
+      <button class="chip prog" onclick="toggleChipProg(this)">Meilleures pauses</button>
+      <button class="chip prog" onclick="toggleChipProg(this)">Small talk fluide</button>
+      <button class="chip prog" onclick="toggleChipProg(this)">À l'aise en réunion</button>
+    </div>
+    <textarea class="journal-textarea" id="prog-text" rows="2" placeholder="Un moment où tu as senti la différence..."></textarea>
+  </div>
+  <div class="card">
+    <div class="card-label">Mots difficiles du jour</div>
+    <input class="words-input" type="text" id="words-input" placeholder="ex: représentatif, synchronisation...">
+    <div style="font-size:12px;color:var(--text3);margin-top:6px;">Séparés par des virgules</div>
+  </div>
+  <button class="save-btn" onclick="saveJournal()">Sauvegarder le bilan</button>
+</div>
+
+<div class="screen" id="screen-dash">
+  <div class="header">
+    <div class="header-tag">Vue d'ensemble</div>
+    <h1>Progression</h1>
+  </div>
+  <div class="stat-grid">
+    <div class="stat-card"><div class="stat-value accent" id="stat-streak">0</div><div class="stat-label">Jours consécutifs</div></div>
+    <div class="stat-card"><div class="stat-value blue" id="stat-score">—</div><div class="stat-label">Score moyen /5</div></div>
+    <div class="stat-card"><div class="stat-value" id="stat-sessions">0</div><div class="stat-label">Sessions complètes</div></div>
+    <div class="stat-card"><div class="stat-value purple" id="stat-bonus">0</div><div class="stat-label">Sessions bonus total</div></div>
+  </div>
+  <div class="card">
+    <div class="card-label">Score de fluidité — 7 derniers jours</div>
+    <div class="chart-area"><svg class="chart-svg" id="chart-svg" viewBox="0 0 340 100" preserveAspectRatio="none"></svg></div>
+    <div class="chart-labels" id="chart-labels"></div>
+  </div>
+  <div class="card">
+    <div class="card-label">Débit — temps de lecture (sec)</div>
+    <div class="chart-area"><svg class="chart-svg" id="debit-chart" viewBox="0 0 340 100" preserveAspectRatio="none"></svg></div>
+    <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:11px;color:var(--text3);"><span>Tests hebdomadaires</span><span style="color:var(--accent);">Objectif : 30–35s</span></div>
+  </div>
+  <div class="section-title">Mots travaillés</div>
+  <div class="card"><div id="words-list"><div style="font-size:14px;color:var(--text3);text-align:center;padding:10px;">Aucun mot enregistré encore.</div></div></div>
+</div>
+
+<nav class="nav">
+  <button class="nav-btn active" onclick="showScreen('home',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    Exercices
+  </button>
+  <button class="nav-btn" onclick="showScreen('debit',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    Débit
+  </button>
+  <button class="nav-btn" onclick="showScreen('journal',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+    Journal
+  </button>
+  <button class="nav-btn" onclick="showScreen('dash',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+    Stats
+  </button>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const STORAGE_KEY='elocoach_v3';
+const days=['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+const today=new Date();
+const todayKey=today.toDateString();
+const dayIndex=Math.floor((today-new Date(today.getFullYear(),0,0))/86400000);
+
+let state={checks:[false,false,false],journal:[],debitEntries:[],words:[],timerRunning:false,timerSeconds:0,articleExpanded:false,cachedDay:null,cachedVirelangues:null,cachedWord:null,lastVirelanguesIndex:-1,lastWordIndex:-1,bonusSessions:[],totalBonusEver:0};
+
+function loadState(){try{const s=localStorage.getItem(STORAGE_KEY);if(s)state={...state,...JSON.parse(s)};}catch(e){}}
+function saveState(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}catch(e){}}
+loadState();
+
+if(state.cachedDay!==todayKey){state.checks=[false,false,false];state.cachedVirelangues=null;state.cachedWord=null;state.cachedDay=todayKey;state.bonusSessions=[];saveState();}
+
+document.getElementById('date-display').textContent=today.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
+document.getElementById('current-day').textContent=Math.min(21,(state.journal?.length||0)+1);
+
+function getMonday(){const d=new Date(today);d.setDate(d.getDate()-(d.getDay()+6)%7);d.setHours(0,0,0,0);return d;}
+function buildStreak(){
+  const row=document.getElementById('streak-row');row.innerHTML='';
+  const ti=(today.getDay()+6)%7;
+  days.forEach((d,i)=>{
+    const el=document.createElement('div');el.className='streak-day';
+    const entry=(state.journal||[]).find(j=>{const d2=new Date(j.date);return(d2.getDay()+6)%7===i&&d2>=getMonday();});
+    if(entry){el.classList.add('done');el.textContent='✓';}
+    else if(i===ti){el.classList.add('today');el.textContent=d;}
+    else{el.classList.add('empty');el.textContent=d;}
+    row.appendChild(el);
+  });
+}
+buildStreak();
+
+function toggleCheck(i){state.checks[i]=!state.checks[i];renderCheck(i);updateProgress();saveState();}
+function renderCheck(i){const el=document.getElementById('check-'+i);el.classList.toggle('done',state.checks[i]);el.innerHTML=state.checks[i]?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0f1117" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>':'';}
+state.checks.forEach((_,i)=>renderCheck(i));
+function updateProgress(){const done=state.checks.filter(Boolean).length;document.getElementById('ex-count').textContent=done+'/3';document.getElementById('progress-fill').style.width=(done/3*100)+'%';updateBonusBadge();}
+updateProgress();
+
+const virelanguesBanque=[
+  ["Papy Pape pépie peu.","Un dragon gradait gradin."],
+  ["Cinq chiens chassent six chats.","Tortue tue tortue, tortue tue tortue."],
+  ["Seize chaises sèchent.","Brebis brûle, brosse brûle, brebis brosse brûle."],
+  ["Poivre vert, poivre gris, poivre rouge.","Un chasseur sachant chasser sans son chien."],
+  ["Trois tortues trottaient sur un trottoir.","La lune luisait lentement sur Lyon."],
+  ["Didon dîna, dit-on, du dos d'un dodu dindon.","Fruits frais, fruits frits, fruits crus."],
+  ["Ces cerises sont si sûres qu'on ne sait si c'en sont.","Natacha n'attacha pas son chat Pacha."],
+  ["Un pâtissier qui pâtissait chez un tapissier.","Branle-bas de combat, branle-bas de combat."],
+  ["Le fisc fixe exprès chaque taxe fixe excessive.","Suis-je bien chez ce cher Serge ?"],
+  ["Dix dodus dindes dodinent dans la dune.","Papier, paille et plume — plume, paille et papier."],
+  ["Corbeau rouge au bec croche, croche en vain.","Klaxonne, taxi, ton klaxon klaxonnera."],
+  ["Si six scies scient six cyprès, six cents scies scient six cents cyprès.","Gros gras grand grain d'orge."],
+  ["Fraise fraîche, fraise cuite, fraise crue.","Tonton, ton thé t'a-t-il ôté ta toux ?"],
+  ["La pie niche haut, l'oie niche bas, où niche hibou ?","Mes blancs burnous sont bons."]
+];
+
+const wordsBanque=[
+  {word:'représentatif',breakdown:'tif → ta-tif → en-ta-tif → pré-zen-ta-tif → re-pré-zen-ta-tif',syllabes:6},
+  {word:'vraisemblablement',breakdown:'ment → ble-ment → bla-ble-ment → sem-bla-ble-ment → vrai-sem-bla-ble-ment',syllabes:6},
+  {word:'imperméabilisation',breakdown:'tion → sa-tion → li-sa-tion → bi-li-sa-tion → a-bi-li-sa-tion → mé-a-bi-li-sa-tion → per-mé-a-bi-li-sa-tion → im-per-mé-a-bi-li-sa-tion',syllabes:8},
+  {word:'circonspection',breakdown:'tion → pec-tion → s-pec-tion → con-s-pec-tion → cir-con-s-pec-tion',syllabes:5},
+  {word:'perpendiculairement',breakdown:'ment → re-ment → lai-re-ment → cu-lai-re-ment → di-cu-lai-re-ment → pen-di-cu-lai-re-ment → per-pen-di-cu-lai-re-ment',syllabes:7},
+  {word:'désagréablement',breakdown:'ment → ble-ment → a-ble-ment → gré-a-ble-ment → sa-gré-a-ble-ment → dé-sa-gré-a-ble-ment',syllabes:6},
+  {word:'incompréhensible',breakdown:'ble → si-ble → en-si-ble → h-en-si-ble → pré-h-en-si-ble → com-pré-h-en-si-ble → in-com-pré-h-en-si-ble',syllabes:7},
+  {word:'prestidigitateur',breakdown:'teur → ta-teur → gi-ta-teur → di-gi-ta-teur → ti-di-gi-ta-teur → res-ti-di-gi-ta-teur → pres-ti-di-gi-ta-teur',syllabes:7},
+  {word:'anticonstitutionnellement',breakdown:'ment → le-ment → nel-le-ment → ion-nel-le-ment → tu-tion-nel-le-ment → sti-tu-tion-nel-le-ment → con-sti-tu-tion-nel-le-ment → ti-con-sti-tu-tion-nel-le-ment → an-ti-con-sti-tu-tion-nel-le-ment',syllabes:9},
+  {word:'déresponsabilisation',breakdown:'tion → sa-tion → li-sa-tion → bi-li-sa-tion → sa-bi-li-sa-tion → pon-sa-bi-li-sa-tion → res-pon-sa-bi-li-sa-tion → dé-res-pon-sa-bi-li-sa-tion',syllabes:8},
+  {word:'synchronisation',breakdown:'tion → sa-tion → ni-sa-tion → ro-ni-sa-tion → chro-ni-sa-tion → syn-chro-ni-sa-tion',syllabes:6},
+  {word:'particulièrement',breakdown:'ment → re-ment → liè-re-ment → cu-liè-re-ment → ti-cu-liè-re-ment → par-ti-cu-liè-re-ment',syllabes:6},
+  {word:'extraordinairement',breakdown:'ment → re-ment → nai-re-ment → di-nai-re-ment → or-di-nai-re-ment → ra-or-di-nai-re-ment → ex-tra-or-di-nai-re-ment',syllabes:7},
+  {word:'développement',breakdown:'ment → pe-ment → lop-pe-ment → ve-lop-pe-ment → dé-ve-lop-pe-ment',syllabes:5},
+  {word:'invraisemblable',breakdown:'ble → a-ble → bla-ble → sem-bla-ble → vrai-sem-bla-ble → in-vrai-sem-bla-ble',syllabes:6},
+];
+
+let usedV=new Set([state.lastVirelanguesIndex]);
+let usedW=new Set([state.lastWordIndex]);
+
+function pickUnused(banque,used){let idx=Math.floor(Math.random()*banque.length);let t=0;while(used.has(idx)&&t<banque.length){idx=(idx+1)%banque.length;t++;}return idx;}
+
+function loadVirelangues(forceNew=false){
+  if(state.cachedVirelangues&&!forceNew){renderVirelangues(state.cachedVirelangues);return;}
+  document.getElementById('virelangues-loading').style.display='block';
+  document.getElementById('virelangues-content').style.display='none';
+  let idx=dayIndex%virelanguesBanque.length;
+  if(forceNew){const prev=state.lastVirelanguesIndex??-1;let t=0;while(idx===prev&&t<virelanguesBanque.length){idx=(idx+1)%virelanguesBanque.length;t++;}}
+  state.lastVirelanguesIndex=idx;usedV.add(idx);state.cachedVirelangues=virelanguesBanque[idx];saveState();renderVirelangues(state.cachedVirelangues);
+}
+function renderVirelangues(pair){document.getElementById('virelangues-loading').style.display='none';document.getElementById('virelangues-content').style.display='block';document.getElementById('virelangues-text').innerHTML=pair.map(v=>`"${v}"`).join('<br>');}
+function reloadVirelangues(){loadVirelangues(true);}
+
+function loadWord(forceNew=false){
+  if(state.cachedWord&&!forceNew){renderWord(state.cachedWord);return;}
+  document.getElementById('word-loading').style.display='block';
+  document.getElementById('word-content').style.display='none';
+  let idx=dayIndex%wordsBanque.length;
+  if(forceNew){const prev=state.lastWordIndex??-1;let t=0;while(idx===prev&&t<wordsBanque.length){idx=(idx+1)%wordsBanque.length;t++;}}
+  state.lastWordIndex=idx;usedW.add(idx);state.cachedWord=wordsBanque[idx];saveState();renderWord(state.cachedWord);
+}
+function renderWord(w){
+  document.getElementById('word-loading').style.display='none';document.getElementById('word-content').style.display='block';
+  document.getElementById('word-of-day').textContent=`"${w.word}"`;
+  document.getElementById('word-breakdown').textContent=w.breakdown;
+  const pips=5,filled=Math.round(((w.syllabes-4)/(9-4))*pips);
+  document.getElementById('difficulty-bar').innerHTML=Array.from({length:pips},(_,i)=>`<div class="difficulty-pip${i<filled?' filled':''}"></div>`).join('')+`<span style="font-size:11px;color:var(--text3);margin-left:8px;">${w.syllabes} syllabes</span>`;
+}
+function reloadWord(){loadWord(true);}
+
+async function loadArticle(){
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:"Génère un court article de lecture en français sur le trail running ou la course en montagne. L'article doit faire environ 120-150 mots, avoir un style journalistique, utiliser des virgules et des points de façon naturelle. Commence directement par le texte sans titre ni introduction. Ne mets pas de guillemets autour du texte."}]})});
+    const data=await r.json();
+    const text=data.content?.find(b=>b.type==='text')?.text||'';
+    const wc=text.trim().split(/\s+/).length;
+    document.getElementById('article-loading').style.display='none';
+    document.getElementById('article-container').style.display='block';
+    document.getElementById('article-words-tag').textContent='~'+wc+' mots';
+    document.getElementById('article-body').innerHTML='<p style="position:relative;z-index:1">'+text.replace(/\n/g,'</p><p style="margin-top:10px">')+'</p><div class="article-fade" id="article-fade"></div>';
+  }catch(e){document.getElementById('article-loading').innerHTML='<span style="color:var(--accent3)">Erreur de chargement.</span>';}
+}
+function toggleArticle(){
+  const body=document.getElementById('article-body');const fade=document.getElementById('article-fade');const btn=document.getElementById('read-btn');
+  state.articleExpanded=!state.articleExpanded;body.classList.toggle('expanded',state.articleExpanded);
+  if(fade)fade.classList.toggle('hidden',state.articleExpanded);btn.textContent=state.articleExpanded?'Réduire ↑':'Lire la suite ↓';
+}
+
+loadVirelangues();loadArticle();loadWord();
+
+async function addBonusSession(){
+  const sessionId=Date.now();
+  const vIdx=pickUnused(virelanguesBanque,usedV);usedV.add(vIdx);
+  const wIdx=pickUnused(wordsBanque,usedW);usedW.add(wIdx);
+  state.bonusSessions.push({id:sessionId,virelanguesIdx:vIdx,wordIdx:wIdx,checks:[false,false]});
+  state.totalBonusEver=(state.totalBonusEver||0)+1;
+  saveState();renderBonusSessions();updateBonusBadge();showToast('Session bonus ajoutée ⚡');
+  setTimeout(()=>document.getElementById('bonus-'+sessionId)?.scrollIntoView({behavior:'smooth',block:'center'}),100);
+}
+function toggleBonusCheck(sessionId,checkIdx){
+  const s=state.bonusSessions.find(s=>s.id===sessionId);if(!s)return;
+  s.checks[checkIdx]=!s.checks[checkIdx];saveState();renderBonusSessions();updateBonusBadge();
+}
+function renderBonusSessions(){
+  const container=document.getElementById('bonus-sessions-container');container.innerHTML='';
+  (state.bonusSessions||[]).forEach((session,si)=>{
+    const v=virelanguesBanque[session.virelanguesIdx]||virelanguesBanque[0];
+    const w=wordsBanque[session.wordIdx]||wordsBanque[0];
+    const allDone=session.checks[0]&&session.checks[1];
+    const div=document.createElement('div');div.className='bonus-session';div.id='bonus-'+session.id;
+    div.innerHTML=`<div class="bonus-session-header"><div class="bonus-session-title">⚡ Session bonus #${si+1} ${allDone?'<span style="color:var(--accent);font-size:11px;">✓ complète</span>':''}</div><div class="bonus-checks"><div class="bonus-check${session.checks[0]?' done':''}" onclick="toggleBonusCheck(${session.id},0)">${session.checks[0]?'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>':''}</div><div class="bonus-check${session.checks[1]?' done':''}" onclick="toggleBonusCheck(${session.id},1)">${session.checks[1]?'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>':''}</div></div></div><div class="bonus-item"><div class="bonus-item-label">Virelangue</div><div class="bonus-item-text">${v.map(x=>'"'+x+'"').join('<br>')}</div><div class="bonus-item-sub">5 répétitions × bouche exagérément ouverte</div></div><div class="bonus-item"><div class="bonus-item-label">Mot difficile</div><div class="bonus-item-text">"${w.word}" <span style="font-size:12px;color:var(--text3);font-style:normal;">(${w.syllabes} syl.)</span></div><div class="bonus-item-sub"><strong>${w.breakdown}</strong></div></div>`;
+    container.appendChild(div);
+  });
+}
+function updateBonusBadge(){document.getElementById('bonus-count-badge').textContent=state.bonusSessions?.length||0;}
+renderBonusSessions();
+
+let timerInterval=null;
+function toggleTimer(){
+  if(state.timerRunning){clearInterval(timerInterval);state.timerRunning=false;document.getElementById('timer-btn').className='timer-btn start';document.getElementById('timer-btn').textContent='Reprendre';showDebitResult(state.timerSeconds);}
+  else{state.timerRunning=true;document.getElementById('timer-btn').className='timer-btn stop';document.getElementById('timer-btn').textContent='Stop';document.getElementById('debit-result').classList.remove('show');timerInterval=setInterval(()=>{state.timerSeconds++;const m=String(Math.floor(state.timerSeconds/60)).padStart(2,'0');const s=String(state.timerSeconds%60).padStart(2,'0');document.getElementById('timer-display').textContent=m+':'+s;},1000);}
+}
+function resetTimer(){clearInterval(timerInterval);state.timerRunning=false;state.timerSeconds=0;document.getElementById('timer-display').textContent='00:00';document.getElementById('timer-btn').className='timer-btn start';document.getElementById('timer-btn').textContent='Démarrer';document.getElementById('debit-result').classList.remove('show');}
+function showDebitResult(sec){
+  const r=document.getElementById('debit-result');r.classList.add('show');
+  const dot=document.getElementById('debit-dot'),verdict=document.getElementById('debit-verdict'),advice=document.getElementById('debit-advice');
+  if(sec<25){dot.className='debit-dot fast';verdict.textContent='Débit rapide ('+sec+'s)';advice.textContent='Objectif : 30–35s. Continue les pauses.';}
+  else if(sec<=35){dot.className='debit-dot ok';verdict.textContent='Débit correct ('+sec+'s) ✓';advice.textContent='Dans la zone cible. Maintiens ce rythme.';}
+  else{dot.className='debit-dot slow';verdict.textContent='Débit lent ('+sec+'s)';advice.textContent='Relâche légèrement les pauses.';}
+}
+
+let selectedScore=null,selectedQuickScore=null;
+function selectScore(btn,val){selectedScore=val;document.querySelectorAll('#score-row .score-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');}
+function selectQuickScore(btn,val){selectedQuickScore=val;document.querySelectorAll('#quick-score-row .score-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');}
+function toggleChip(el){el.classList.toggle('selected');}
+function toggleChipProg(el){el.classList.toggle('selected');}
+
+function saveJournal(){
+  const blocages=[...document.querySelectorAll('#blocage-chips .chip.selected')].map(c=>c.textContent);
+  const progs=[...document.querySelectorAll('#prog-chips .chip.selected')].map(c=>c.textContent);
+  const wordsRaw=document.getElementById('words-input').value.trim();
+  const newWords=wordsRaw?wordsRaw.split(',').map(w=>w.trim()).filter(Boolean):[];
+  const entry={date:new Date().toISOString(),score:selectedScore,blocages,blocageText:document.getElementById('blocage-text').value.trim(),progs,progText:document.getElementById('prog-text').value.trim(),words:newWords,exercisesDone:state.checks.filter(Boolean).length,bonusDone:state.bonusSessions.filter(s=>s.checks[0]&&s.checks[1]).length};
+  if(!state.journal)state.journal=[];
+  const idx=state.journal.findIndex(j=>new Date(j.date).toDateString()===todayKey);
+  if(idx>=0)state.journal[idx]=entry;else state.journal.push(entry);
+  newWords.forEach(w=>{if(!state.words)state.words=[];if(!state.words.find(sw=>sw.word.toLowerCase()===w.toLowerCase()))state.words.push({word:w,date:new Date().toISOString()});});
+  saveState();showToast('Bilan sauvegardé ✓');buildStreak();renderDashboard();
+}
+function saveDebitEntry(){
+  if(!state.timerSeconds&&!selectedQuickScore){showToast("Lance le timer d'abord");return;}
+  if(!state.debitEntries)state.debitEntries=[];
+  const entry={date:new Date().toISOString(),time:state.timerSeconds||null,score:selectedQuickScore};
+  const idx=state.debitEntries.findIndex(e=>new Date(e.date).toDateString()===todayKey);
+  if(idx>=0)state.debitEntries[idx]=entry;else state.debitEntries.push(entry);
+  saveState();showToast('Test enregistré ✓');renderDashboard();
+}
+
+function renderDashboard(){
+  const journal=state.journal||[],words=state.words||[],debit=state.debitEntries||[];
+  const scores=journal.filter(j=>j.score).map(j=>j.score);
+  const avg=scores.length?(scores.reduce((a,b)=>a+b,0)/scores.length).toFixed(1):'—';
+  document.getElementById('stat-streak').textContent=calcStreak();
+  document.getElementById('stat-score').textContent=avg;
+  document.getElementById('stat-sessions').textContent=journal.filter(j=>j.exercisesDone>=3).length;
+  document.getElementById('stat-bonus').textContent=state.totalBonusEver||0;
+  renderScoreChart(journal);renderDebitChart(debit);renderWordsList(words);
+}
+function calcStreak(){let s=0,d=new Date();for(let i=0;i<30;i++){if((state.journal||[]).find(j=>new Date(j.date).toDateString()===d.toDateString()))s++;else break;d.setDate(d.getDate()-1);}return s;}
+function renderScoreChart(journal){
+  const svg=document.getElementById('chart-svg'),labels=document.getElementById('chart-labels'),last7=[];
+  for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const e=journal.find(j=>new Date(j.date).toDateString()===d.toDateString());last7.push({day:days[(d.getDay()+6)%7],score:e?.score||null});}
+  labels.innerHTML=last7.map(d=>`<span>${d.day}</span>`).join('');
+  drawLineChart(svg,last7.map(d=>d.score),1,5,'#e8ff47');
+}
+function renderDebitChart(entries){drawLineChart(document.getElementById('debit-chart'),entries.slice(-7).map(e=>e.time||null),15,50,'#47c2ff',[30,35]);}
+function drawLineChart(svg,data,min,max,color,targetRange){
+  const W=340,H=100,PAD=10;
+  if(!data.filter(Boolean).length){svg.innerHTML='<text x="170" y="55" fill="#5a6080" font-size="12" text-anchor="middle" font-family="DM Sans">Pas encore de données</text>';return;}
+  const validData=data.map((v,i)=>({v,i})).filter(d=>d.v!==null);
+  const xStep=(W-PAD*2)/Math.max(data.length-1,1);
+  const yScale=v=>H-PAD-((v-min)/(max-min))*(H-PAD*2);
+  const gid='g'+color.replace('#','');
+  let html=`<defs><linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${color}" stop-opacity="0.3"/><stop offset="100%" stop-color="${color}" stop-opacity="0"/></linearGradient></defs>`;
+  if(targetRange){const y1=yScale(targetRange[1]),y2=yScale(targetRange[0]);html+=`<rect x="${PAD}" y="${y1}" width="${W-PAD*2}" height="${y2-y1}" fill="rgba(232,255,71,0.07)" rx="2"/>`;}
+  [1,2,3,4,5].forEach(v=>{const y=yScale(min+(max-min)/4*(v-1));html+=`<line x1="${PAD}" y1="${y}" x2="${W-PAD}" y2="${y}" stroke="#2a3050" stroke-width="0.5"/>`;});
+  if(validData.length>=2){const pathD=validData.map((d,i)=>(i===0?'M':'L')+(PAD+d.i*xStep)+','+yScale(d.v)).join(' ');html+=`<path d="${pathD} L${PAD+validData[validData.length-1].i*xStep},${H-PAD} L${PAD+validData[0].i*xStep},${H-PAD} Z" fill="url(#${gid})"/><path d="${pathD}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;}
+  validData.forEach(d=>{html+=`<circle cx="${PAD+d.i*xStep}" cy="${yScale(d.v)}" r="4" fill="${color}" stroke="#0f1117" stroke-width="2"/><text x="${PAD+d.i*xStep}" y="${yScale(d.v)-10}" fill="${color}" font-size="9" text-anchor="middle" font-family="Syne">${d.v}</text>`;});
+  svg.innerHTML=html;
+}
+function renderWordsList(words){
+  const c=document.getElementById('words-list');
+  if(!words.length){c.innerHTML='<div style="font-size:14px;color:var(--text3);text-align:center;padding:10px;">Aucun mot enregistré encore.</div>';return;}
+  c.innerHTML=words.slice(-10).reverse().map(w=>`<div class="word-item"><div><div class="word-name">${w.word}</div><div class="word-date">${new Date(w.date).toLocaleDateString('fr-FR')}</div></div><span class="word-badge">à travailler</span></div>`).join('');
+}
+
+function showScreen(name,btn){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));document.getElementById('screen-'+name).classList.add('active');btn.classList.add('active');if(name==='dash')renderDashboard();}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+
+renderDashboard();
+</script>
+</body>
+</html>
