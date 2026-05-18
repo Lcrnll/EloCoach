@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -15,7 +16,7 @@
   .nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:420px;background:var(--surface);border-top:1px solid var(--border);display:flex;z-index:100;padding:8px 0 16px;}
   .nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:none;cursor:pointer;color:var(--text3);font-family:'DM Sans',sans-serif;font-size:10px;transition:color 0.2s;padding:6px 0;position:relative;}
   .nav-btn.active{color:var(--accent);}
-  .nav-btn svg{width:20px;height:20px;}
+  .nav-btn svg{width:22px;height:22px;}
   .screen{display:none;padding:24px 20px 100px;min-height:100vh;}
   .screen.active{display:block;}
   .header{margin-bottom:28px;}
@@ -39,40 +40,12 @@
   .ex-text{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--text);line-height:1.5;margin-bottom:12px;font-style:italic;}
   .ex-instruction{font-size:13px;color:var(--text2);line-height:1.6;}
   .ex-instruction strong{color:var(--text);}
-  .timer-area{margin-top:16px;}
-  .timer-display{font-family:'Syne',sans-serif;font-size:42px;font-weight:800;color:var(--accent);text-align:center;margin:10px 0;letter-spacing:-1px;}
-  .timer-btn{width:100%;padding:12px;border-radius:var(--radius-sm);border:none;cursor:pointer;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase;transition:all 0.2s;}
-  .timer-btn.start{background:var(--accent);color:#0f1117;}
-  .timer-btn.stop{background:var(--accent3);color:#fff;}
-  .timer-btn.reset{background:var(--surface2);color:var(--text2);margin-top:8px;}
-  .debit-text{font-size:15px;line-height:1.9;color:var(--text);background:var(--surface2);border-radius:var(--radius-sm);padding:16px;margin:14px 0;border-left:3px solid var(--accent2);}
-  .debit-result{display:none;align-items:center;gap:10px;background:var(--surface2);border-radius:var(--radius-sm);padding:14px 16px;margin-top:12px;}
-  .debit-result.show{display:flex;}
-  .debit-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;}
-  .debit-dot.fast{background:var(--accent3);}
-  .debit-dot.ok{background:var(--accent);}
-  .debit-dot.slow{background:var(--accent2);}
-  .debit-result-text{font-size:13px;color:var(--text2);}
-  .debit-result-text strong{color:var(--text);display:block;font-size:15px;margin-bottom:2px;}
   .article-body{font-size:14px;color:var(--text2);line-height:1.9;max-height:180px;overflow:hidden;position:relative;transition:max-height 0.4s ease;}
   .article-body.expanded{max-height:2000px;}
   .article-fade{position:absolute;bottom:0;left:0;right:0;height:60px;background:linear-gradient(transparent,var(--surface));pointer-events:none;transition:opacity 0.3s;}
   .article-fade.hidden{opacity:0;}
   .read-btn{width:100%;margin-top:12px;padding:10px;border-radius:var(--radius-sm);background:var(--surface2);border:1px solid var(--border);color:var(--text2);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;}
-  .score-row{display:flex;gap:8px;margin:12px 0;}
-  .score-btn{flex:1;padding:10px 6px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:none;color:var(--text2);font-family:'Syne',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all 0.15s;text-align:center;}
-  .score-btn.selected{border-color:var(--accent);background:rgba(232,255,71,0.1);color:var(--accent);}
-  .journal-textarea{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;resize:none;line-height:1.6;outline:none;transition:border-color 0.2s;}
-  .journal-textarea:focus{border-color:var(--accent2);}
-  .journal-textarea::placeholder{color:var(--text3);}
-  .chip-row{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0;}
-  .chip{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;border:1.5px solid var(--border);background:none;color:var(--text2);cursor:pointer;transition:all 0.15s;font-family:'DM Sans',sans-serif;}
-  .chip.selected{border-color:var(--accent3);background:rgba(255,107,107,0.1);color:var(--accent3);}
-  .chip.prog.selected{border-color:var(--accent);background:rgba(232,255,71,0.1);color:var(--accent);}
-  .words-input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color 0.2s;}
-  .words-input:focus{border-color:var(--accent2);}
-  .save-btn{width:100%;padding:14px;border-radius:var(--radius-sm);background:var(--accent);border:none;color:#0f1117;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;margin-top:16px;transition:opacity 0.2s;}
-  .save-btn:active{opacity:0.8;}
+  .article-theme{display:inline-block;font-size:11px;background:rgba(71,194,255,0.12);color:var(--accent2);padding:4px 10px;border-radius:20px;font-weight:600;margin-bottom:12px;}
   .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
   .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;}
   .stat-value{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;}
@@ -103,7 +76,6 @@
   .fav-item:last-child{border-bottom:none;}
   .fav-text{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;font-style:italic;color:var(--text);line-height:1.6;flex:1;}
   .fav-remove{background:none;border:none;cursor:pointer;color:var(--text3);font-size:18px;flex-shrink:0;padding:2px 4px;}
-  .article-theme{display:inline-block;font-size:11px;background:rgba(71,194,255,0.12);color:var(--accent2);padding:4px 10px;border-radius:20px;font-weight:600;margin-bottom:12px;}
   .bonus-divider{display:flex;align-items:center;gap:12px;margin:24px 0 16px;}
   .bonus-divider-line{flex:1;height:1px;background:var(--border);}
   .bonus-divider-label{font-family:'Syne',sans-serif;font-size:11px;color:var(--accent4);letter-spacing:2px;text-transform:uppercase;font-weight:700;white-space:nowrap;}
@@ -124,13 +96,15 @@
 </style>
 </head>
 <body>
- 
+
+<!-- EXERCICES -->
 <div class="screen active" id="screen-home">
   <div class="header">
     <div class="header-tag">Jour <span id="current-day">1</span> · <span id="month-label"></span></div>
     <h1>Bonjour,<br>c'est l'heure<br>de pratiquer.</h1>
     <p id="date-display" style="margin-top:10px;color:var(--text3);font-size:13px;"></p>
   </div>
+
   <div class="card">
     <div class="card-label">Régularité cette semaine</div>
     <div class="streak-row" id="streak-row"></div>
@@ -144,7 +118,8 @@
       <span id="bonus-count-badge" style="font-family:'Syne',sans-serif;font-weight:700;font-size:14px;color:var(--accent4);">0</span>
     </div>
   </div>
- 
+
+  <!-- Virelangues -->
   <div class="card exercise-card">
     <div class="ex-header">
       <div style="display:flex;align-items:center;gap:8px;">
@@ -159,7 +134,8 @@
     <div class="ex-text" id="virelangues-text"></div>
     <div class="ex-instruction">Répète chaque phrase <strong>5 fois</strong>, bouche exagérément ouverte. Lèvres actives.</div>
   </div>
- 
+
+  <!-- Article espace -->
   <div class="card exercise-card">
     <div class="ex-header">
       <div class="ex-badge blue">Débit · Espace</div>
@@ -170,7 +146,8 @@
     <div class="article-body" id="article-body"><div class="article-fade" id="article-fade"></div></div>
     <button class="read-btn" id="read-btn" onclick="toggleArticle()">Lire la suite ↓</button>
   </div>
- 
+
+  <!-- Mot du jour -->
   <div class="card exercise-card">
     <div class="ex-header">
       <div style="display:flex;align-items:center;gap:8px;">
@@ -183,7 +160,8 @@
     <div class="difficulty-bar" id="difficulty-bar"></div>
     <div class="ex-instruction" style="margin-top:14px;">Découpage syllabique inversé :<br><strong id="word-breakdown"></strong><br><br>3 fois lentement, puis 1 fois à vitesse normale.</div>
   </div>
- 
+
+  <!-- Sessions bonus -->
   <div class="bonus-divider">
     <div class="bonus-divider-line"></div>
     <div class="bonus-divider-label">⚡ Sessions bonus</div>
@@ -195,85 +173,8 @@
     Ajouter une session
   </button>
 </div>
- 
-<div class="screen" id="screen-debit">
-  <div class="header">
-    <div class="header-tag">Test hebdomadaire</div>
-    <h1>Test de<br>débit</h1>
-    <p>70 mots · À faire une fois par semaine</p>
-  </div>
-  <div class="card">
-    <div class="card-label">Texte de référence</div>
-    <div class="debit-text">La communication orale est un art qui s'apprend et se travaille. Beaucoup de personnes pensent qu'il suffit d'avoir des idées claires pour bien s'exprimer, mais ce n'est pas suffisant. La façon dont on articule, dont on respire, dont on module sa voix — tout cela joue un rôle aussi important que le contenu lui-même. Prendre conscience de son rythme naturel est la première étape pour progresser.</div>
-    <div class="timer-area">
-      <div class="timer-display" id="timer-display">00:00</div>
-      <button class="timer-btn start" id="timer-btn" onclick="toggleTimer()">Démarrer</button>
-      <button class="timer-btn reset" onclick="resetTimer()">Réinitialiser</button>
-    </div>
-    <div class="debit-result" id="debit-result">
-      <div class="debit-dot" id="debit-dot"></div>
-      <div class="debit-result-text"><strong id="debit-verdict"></strong><span id="debit-advice"></span></div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-label">Score subjectif du jour</div>
-    <div class="score-row" id="quick-score-row">
-      <button class="score-btn" onclick="selectQuickScore(this,1)">😬 1</button>
-      <button class="score-btn" onclick="selectQuickScore(this,2)">😐 2</button>
-      <button class="score-btn" onclick="selectQuickScore(this,3)">🙂 3</button>
-      <button class="score-btn" onclick="selectQuickScore(this,4)">😊 4</button>
-      <button class="score-btn" onclick="selectQuickScore(this,5)">🔥 5</button>
-    </div>
-    <button class="save-btn" onclick="saveDebitEntry()">Enregistrer</button>
-  </div>
-</div>
- 
-<div class="screen" id="screen-journal">
-  <div class="header">
-    <div class="header-tag">Bilan quotidien</div>
-    <h1>Journal<br>du jour</h1>
-  </div>
-  <div class="card">
-    <div class="card-label">Score de fluidité</div>
-    <div class="score-row" id="score-row">
-      <button class="score-btn" onclick="selectScore(this,1)">😬 1</button>
-      <button class="score-btn" onclick="selectScore(this,2)">😐 2</button>
-      <button class="score-btn" onclick="selectScore(this,3)">🙂 3</button>
-      <button class="score-btn" onclick="selectScore(this,4)">😊 4</button>
-      <button class="score-btn" onclick="selectScore(this,5)">🔥 5</button>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-label">Blocages du jour</div>
-    <div class="chip-row" id="blocage-chips">
-      <button class="chip" onclick="toggleChip(this)">Débit trop rapide</button>
-      <button class="chip" onclick="toggleChip(this)">Mots avalés</button>
-      <button class="chip" onclick="toggleChip(this)">Perdu le fil</button>
-      <button class="chip" onclick="toggleChip(this)">Stress / rush</button>
-      <button class="chip" onclick="toggleChip(this)">Effet interview</button>
-      <button class="chip" onclick="toggleChip(this)">Autre</button>
-    </div>
-    <textarea class="journal-textarea" id="blocage-text" rows="3" placeholder="Décris la situation..."></textarea>
-  </div>
-  <div class="card">
-    <div class="card-label">Progrès ressentis</div>
-    <div class="chip-row" id="prog-chips">
-      <button class="chip prog" onclick="toggleChipProg(this)">Mieux articulé</button>
-      <button class="chip prog" onclick="toggleChipProg(this)">Rythme plus posé</button>
-      <button class="chip prog" onclick="toggleChipProg(this)">Meilleures pauses</button>
-      <button class="chip prog" onclick="toggleChipProg(this)">Small talk fluide</button>
-      <button class="chip prog" onclick="toggleChipProg(this)">À l'aise en réunion</button>
-    </div>
-    <textarea class="journal-textarea" id="prog-text" rows="2" placeholder="Un moment où tu as senti la différence..."></textarea>
-  </div>
-  <div class="card">
-    <div class="card-label">Mots difficiles du jour</div>
-    <input class="words-input" type="text" id="words-input" placeholder="ex: représentatif, synchronisation...">
-    <div style="font-size:12px;color:var(--text3);margin-top:6px;">Séparés par des virgules</div>
-  </div>
-  <button class="save-btn" onclick="saveJournal()">Sauvegarder le bilan</button>
-</div>
- 
+
+<!-- STATS -->
 <div class="screen" id="screen-dash">
   <div class="header">
     <div class="header-tag">Vue d'ensemble</div>
@@ -281,24 +182,20 @@
   </div>
   <div class="stat-grid">
     <div class="stat-card"><div class="stat-value accent" id="stat-streak">0</div><div class="stat-label">Jours consécutifs</div></div>
-    <div class="stat-card"><div class="stat-value blue" id="stat-score">—</div><div class="stat-label">Score moyen /5</div></div>
+    <div class="stat-card"><div class="stat-value blue" id="stat-days">0</div><div class="stat-label">Jours pratiqués</div></div>
     <div class="stat-card"><div class="stat-value" id="stat-sessions">0</div><div class="stat-label">Sessions complètes</div></div>
-    <div class="stat-card"><div class="stat-value purple" id="stat-bonus">0</div><div class="stat-label">Sessions bonus total</div></div>
+    <div class="stat-card"><div class="stat-value purple" id="stat-bonus">0</div><div class="stat-label">Sessions bonus</div></div>
   </div>
   <div class="card">
-    <div class="card-label">Score de fluidité — 7 derniers jours</div>
+    <div class="card-label">Exercices complétés — 7 derniers jours</div>
     <div class="chart-area"><svg class="chart-svg" id="chart-svg" viewBox="0 0 340 100" preserveAspectRatio="none"></svg></div>
     <div class="chart-labels" id="chart-labels"></div>
   </div>
-  <div class="card">
-    <div class="card-label">Débit — temps de lecture (sec)</div>
-    <div class="chart-area"><svg class="chart-svg" id="debit-chart" viewBox="0 0 340 100" preserveAspectRatio="none"></svg></div>
-    <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:11px;color:var(--text3);"><span>Tests hebdomadaires</span><span style="color:var(--accent);">Objectif : 30–35s</span></div>
-  </div>
   <div class="section-title">Mots travaillés</div>
-  <div class="card"><div id="words-list"><div style="font-size:14px;color:var(--text3);text-align:center;padding:10px;">Aucun mot enregistré encore.</div></div></div>
+  <div class="card"><div id="words-list"><div style="font-size:14px;color:var(--text3);text-align:center;padding:10px;">Aucun mot noté encore.</div></div></div>
 </div>
- 
+
+<!-- FAVORIS -->
 <div class="screen" id="screen-favs">
   <div class="header">
     <div class="header-tag">Mes préférés</div>
@@ -307,19 +204,11 @@
   </div>
   <div class="card"><div id="favs-list"></div></div>
 </div>
- 
+
 <nav class="nav">
   <button class="nav-btn active" onclick="showScreen('home',this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
     Exercices
-  </button>
-  <button class="nav-btn" onclick="showScreen('debit',this)">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-    Débit
-  </button>
-  <button class="nav-btn" onclick="showScreen('journal',this)">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-    Journal
   </button>
   <button class="nav-btn" onclick="showScreen('dash',this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
@@ -330,12 +219,13 @@
     Favoris
   </button>
 </nav>
- 
+
 <div class="toast" id="toast"></div>
- 
+
 <script>
+// ===== DONNÉES =====
 const VIRELANGUES=[["Papy Pape pépie peu.","Un dragon gradait gradin."],["Cinq chiens chassent six chats.","Tortue tue tortue, tortue tue tortue."],["Seize chaises sèchent.","Brebis brûle, brosse brûle, brebis brosse brûle."],["Poivre vert, poivre gris, poivre rouge.","Un chasseur sachant chasser sans son chien."],["Trois tortues trottaient sur un trottoir.","La lune luisait lentement sur Lyon."],["Didon dîna, dit-on, du dos d'un dodu dindon.","Fruits frais, fruits frits, fruits crus."],["Ces cerises sont si sûres qu'on ne sait si c'en sont.","Natacha n'attacha pas son chat Pacha."],["Un pâtissier qui pâtissait chez un tapissier.","Branle-bas de combat, branle-bas de combat."],["Le fisc fixe exprès chaque taxe fixe excessive.","Suis-je bien chez ce cher Serge ?"],["Dix dodus dindes dodinent dans la dune.","Papier, paille et plume — plume, paille et papier."],["Corbeau rouge au bec croche, croche en vain.","Klaxonne, taxi, ton klaxon klaxonnera."],["Si six scies scient six cyprès, six cents scies scient six cents cyprès.","Gros gras grand grain d'orge."],["Fraise fraîche, fraise cuite, fraise crue.","Tonton, ton thé t'a-t-il ôté ta toux ?"],["La pie niche haut, l'oie niche bas, où niche hibou ?","Mes blancs burnous sont bons."],["Lili lit le livre là-haut dans le lit.","Grosse caisse, grosse caisse, grosse caisse."],["Vrai, vrai, vrai, le vent vif vire vers le vert vallon.","Plume plate, plume plate, plume plate."],["Ces braves gens bavards buvaient beaucoup.","Chaussettes de l'archiduchesse, sèches ou archi-sèches ?"],["Cet été, Thé s'est tu et Thé s'est tenu.","Petit pot de beurre, quand te dépetit-pot-de-beurreriseras-tu ?"],["Rouge gorge dans un jardin vert vif.","Char bourré de bois brun brûle bien."],["Mets mon manteau mou mais mets mes moufles.","Fine farine, fine farine, fine farine."],["Qui rit des curés d'Issy rit des curés d'Issy.","Six succès, six succès, six succès."],["Un bon bain bien brun, baignons bien bébé.","Crasse-crasse-crasse dit la grenouille."],["Du laid, du lait, de l'aloe, de l'allaitement.","Pipe Papa pipe, Papa pipe Pipe."],["Mur mitoyen, mitoyenneté du mur mitoyen.","Gros grain gris, gros grain gris, gros grain gris."],["Ce chasseur sait chasser sans chien et sans fusil.","Trop de trop — trop de trop — trop de trop."],["Ta Katie t'a quitté, atone tu te tais.","Riri, Fifi et Loulou — Loulou, Fifi et Riri."],["Blanc bœuf, bœuf blanc, bœuf gris gras.","Tas de riz, tas de rats, tas de riz tentant."],["Phoque fuit, phoque fuit, phoque fuit vite.","Sot vit, sot ment, sot sort, sot sert."],["Lundi, Louis Lalouette alla là-bas longuement.","Cinq gros rats grillent dans la grande poêle grasse."],["Mon père est maire, mon frère est masseur.","Dans ta tente ta tante t'attend tendrement."]];
- 
+
 const ARTICLES=[{t:"🌌 Trou noir",p:"Un trou noir est une région de l'espace où la gravité est si intense que rien, pas même la lumière, ne peut s'en échapper. Il se forme lorsqu'une étoile massive s'effondre sur elle-même en fin de vie. La frontière invisible qui délimite cette zone de non-retour s'appelle l'horizon des événements. Au-delà de cette limite, toute matière est irrévocablement aspirée vers une singularité, un point de densité infinie où les lois connues de la physique cessent de fonctionner."},
 {t:"⭐ Étoile à neutrons",p:"Une étoile à neutrons est l'un des objets les plus denses de l'univers. Elle est le résidu compact d'une étoile massive ayant explosé en supernova. Son diamètre ne dépasse pas une vingtaine de kilomètres, mais sa masse peut être supérieure à celle du Soleil. Sa densité est si extrême qu'une cuillère à café de sa matière pèserait plusieurs centaines de millions de tonnes sur Terre. Certaines étoiles à neutrons tournent sur elles-mêmes des centaines de fois par seconde."},
 {t:"🔭 Expansion de l'univers",p:"Edwin Hubble découvrit, en 1929, que les galaxies s'éloignent les unes des autres à une vitesse proportionnelle à leur distance. Cette observation fonda le modèle du Big Bang et prouva que l'univers est en expansion constante. En 1998, des équipes de chercheurs constatèrent que cette expansion s'accélère, portée par une mystérieuse énergie sombre. Cette découverte valut le prix Nobel de physique en 2011 et bouleversa profondément notre compréhension de la structure et du destin de l'univers."},
@@ -351,14 +241,14 @@ const ARTICLES=[{t:"🌌 Trou noir",p:"Un trou noir est une région de l'espace 
 {t:"🌋 Planètes rocheuses",p:"Les planètes rocheuses, ou planètes telluriques, sont composées essentiellement de silicates et de métaux. Dans notre système solaire, Mercure, Vénus, la Terre et Mars appartiennent à cette famille. Elles se sont formées il y a environ quatre virgule cinq milliards d'années, par accrétion de poussières et de roches dans le disque protoplanétaire entourant le jeune Soleil. Parmi elles, seule la Terre présente des conditions permettant la vie telle que nous la connaissons, grâce à son atmosphère et son eau liquide."},
 {t:"💫 Pulsars",p:"Un pulsar est une étoile à neutrons en rotation rapide qui émet des faisceaux de rayonnement électromagnétique depuis ses pôles magnétiques. Lorsque ces faisceaux balayent la Terre, ils produisent un signal périodique d'une régularité remarquable, comparable à une horloge cosmique. Certains pulsars émettent plusieurs centaines d'impulsions par seconde. Découverts en 1967 par Jocelyn Bell Burnell, ils furent d'abord surnommés LGM, pour Little Green Men, en référence à de potentielles civilisations extraterrestres."},
 {t:"🌐 Big Bang",p:"Le Big Bang désigne l'événement initial à l'origine de l'univers, survenu il y a environ treize virgule huit milliards d'années. En une fraction infime de seconde, l'univers est passé d'un état extrêmement dense et chaud à une expansion rapide. Les premières particules élémentaires se formèrent, puis les premiers noyaux atomiques. Il fallut trois cent quatre-vingt mille ans pour que l'univers refroidisse suffisamment pour que les premiers atomes apparaissent. Ce rayonnement fossile est encore détectable aujourd'hui."},
-{t:"🛸 Recherche de vie extraterrestre",p:"La question de l'existence de vie extraterrestre est l'une des plus profondes de l'histoire scientifique. Le programme SETI, créé dans les années soixante, scrute le ciel à la recherche de signaux radio artificiels émis par des civilisations lointaines. À ce jour, aucun signal concluant n'a été détecté. Avec des milliards de galaxies, chacune contenant des milliards d'étoiles, les probabilités statistiques semblent favorables à l'existence d'autres formes de vie. Le paradoxe de Fermi pose alors une question troublante : si la vie est si probable, pourquoi n'en avons-nous aucune preuve ?"},
-{t:"🔭 Télescope James Webb",p:"Le télescope spatial James Webb est le plus puissant jamais lancé par l'humanité. Mis en orbite en décembre 2021, il observe l'univers dans l'infrarouge, ce qui lui permet de percer les nuages de poussières cosmiques et de voir des objets extrêmement lointains. Ses premières images, publiées en juillet 2022, révélèrent des galaxies vieilles de plus de treize milliards d'années avec une précision sans précédent. Il est également capable d'analyser les atmosphères d'exoplanètes, ouvrant une fenêtre inédite sur la question de l'habitabilité."},
+{t:"🛸 Vie extraterrestre",p:"La question de l'existence de vie extraterrestre est l'une des plus profondes de l'histoire scientifique. Le programme SETI, créé dans les années soixante, scrute le ciel à la recherche de signaux radio artificiels émis par des civilisations lointaines. À ce jour, aucun signal concluant n'a été détecté. Avec des milliards de galaxies, chacune contenant des milliards d'étoiles, les probabilités statistiques semblent favorables à l'existence d'autres formes de vie. Le paradoxe de Fermi pose alors une question troublante : si la vie est si probable, pourquoi n'en avons-nous aucune preuve ?"},
+{t:"🔭 Télescope James Webb",p:"Le télescope spatial James Webb est le plus puissant jamais lancé par l'humanité. Mis en orbite en décembre 2021, il observe l'univers dans l'infrarouge, ce qui lui permet de percer les nuages de poussières cosmiques et de voir des objets extrêmement lointains. Ses premières images, publiées en juillet 2022, révélèrent des galaxies vieilles de plus de treize milliards d'années avec une précision sans précédent. Il analyse également les atmosphères d'exoplanètes, ouvrant une fenêtre inédite sur la question de l'habitabilité."},
 {t:"🌙 Formation de la Lune",p:"La Lune s'est formée il y a environ quatre virgule cinq milliards d'années, à la suite d'une collision colossale entre la jeune Terre et un corps de la taille de Mars, baptisé Théia. L'impact projeta d'immenses quantités de matière en orbite, qui s'agrégèrent pour former notre satellite naturel. La Lune exerce une influence gravitationnelle stabilisatrice sur l'axe de rotation de la Terre, contribuant à la régularité de notre climat. Sans elle, notre planète serait probablement bien moins hospitalière à la vie."},
 {t:"⚡ Magnétars",p:"Les magnétars sont un type particulier d'étoiles à neutrons dont le champ magnétique est mille milliards de fois plus intense que celui de la Terre. Ce sont les objets magnétiques les plus puissants connus dans l'univers. Leur activité peut libérer en une fraction de seconde une énergie supérieure à ce que le Soleil produit en cent mille ans. En 2004, un magnétar situé à cinquante mille années-lumière de la Terre provoqua une perturbation mesurable dans notre ionosphère. On n'en connaît qu'une vingtaine dans notre galaxie."},
 {t:"🌀 Quasars",p:"Les quasars sont les objets les plus lumineux de l'univers observable. Ils sont alimentés par des trous noirs supermassifs en pleine activité, qui engloutissent d'immenses quantités de matière et libèrent une énergie colossale sous forme de lumière et de jets de plasma. Certains quasars sont mille fois plus lumineux que l'ensemble de notre galaxie. Ils se trouvent à des distances de plusieurs milliards d'années-lumière, ce qui signifie qu'on les observe tels qu'ils existaient dans l'univers jeune."},
 {t:"🧲 Relativité générale",p:"La relativité générale, publiée par Albert Einstein en 1915, révolutionna notre conception de la gravité. Selon cette théorie, la gravité n'est pas une force, mais une courbure de l'espace-temps provoquée par la masse. Un objet massif déforme l'espace-temps autour de lui, comme une boule posée sur un tissu tendu. D'autres objets suivent ces courbures, ce que nous percevons comme une attraction gravitationnelle. Cette théorie prédit avec précision la déviation de la lumière, le décalage du temps et l'existence des trous noirs."},
-{t:"☄️ Comètes",p:"Les comètes sont des corps glacés composés de glace, de poussières et de roches, vestiges de la formation du système solaire. Lorsqu'une comète s'approche du Soleil, la chaleur vaporise ses glaces, libérant des gaz et des poussières qui forment une chevelure lumineuse et une queue pouvant s'étirer sur des millions de kilomètres. Les comètes proviennent principalement du nuage de Oort, une vaste sphère de débris glacés à la périphérie du système solaire. Certains scientifiques pensent qu'elles auraient pu apporter sur la jeune Terre des molécules organiques essentielles à la vie."},
-{t:"🪐 Jupiter, géant protecteur",p:"Jupiter est la plus grande planète du système solaire. Sa masse est deux fois et demie supérieure à celle de toutes les autres planètes réunies. Sa puissante gravité joue un rôle protecteur essentiel pour la Terre, en déviant ou en capturant de nombreux astéroïdes et comètes. La grande tache rouge de Jupiter est une tempête atmosphérique persistante depuis au moins trois cent cinquante ans, plus large que la Terre elle-même. Ses quatre grandes lunes, découvertes par Galilée en 1610, furent les premiers objets observés en orbite autour d'un autre corps que la Terre."},
+{t:"☄️ Comètes",p:"Les comètes sont des corps glacés composés de glace, de poussières et de roches, vestiges de la formation du système solaire. Lorsqu'une comète s'approche du Soleil, la chaleur vaporise ses glaces, libérant des gaz et des poussières qui forment une chevelure lumineuse et une queue pouvant s'étirer sur des millions de kilomètres. Les comètes proviennent principalement du nuage de Oort, à la périphérie du système solaire. Certains scientifiques pensent qu'elles auraient pu apporter sur la jeune Terre des molécules organiques essentielles à la vie."},
+{t:"🪐 Jupiter protecteur",p:"Jupiter est la plus grande planète du système solaire. Sa masse est deux fois et demie supérieure à celle de toutes les autres planètes réunies. Sa puissante gravité joue un rôle protecteur essentiel pour la Terre, en déviant ou en capturant de nombreux astéroïdes et comètes. La grande tache rouge de Jupiter est une tempête atmosphérique persistante depuis au moins trois cent cinquante ans, plus large que la Terre elle-même. Ses quatre grandes lunes, découvertes par Galilée en 1610, furent les premiers objets observés en orbite autour d'un autre corps que la Terre."},
 {t:"🌟 Nébuleuses",p:"Une nébuleuse est un immense nuage de gaz et de poussières dans l'espace interstellaire. Certaines nébuleuses sont des berceaux d'étoiles, où la matière se condense sous l'effet de la gravité jusqu'à déclencher des réactions thermonucléaires. D'autres sont les restes d'étoiles mortes, comme la nébuleuse du Crabe, née de la supernova observée par des astronomes chinois en 1054. La nébuleuse d'Orion, visible à l'œil nu, se trouve à environ mille trois cents années-lumière et contient des centaines d'étoiles en cours de formation."},
 {t:"🔵 Naines blanches",p:"Une naine blanche est le résidu compact d'une étoile de masse moyenne, comme notre Soleil, après qu'elle a expulsé ses couches externes. Elle ne produit plus d'énergie par fusion nucléaire, mais rayonne la chaleur accumulée au cours de sa vie. De la taille d'une planète comme la Terre, mais avec une masse comparable à celle du Soleil, sa densité est extraordinaire. Au fil des milliards d'années, elle se refroidit pour devenir une naine noire, un objet théorique que l'univers n'est pas encore assez vieux pour avoir produit."},
 {t:"🛰️ Gravité artificielle",p:"En l'absence de gravité, le corps humain se détériore rapidement. Les astronautes perdent de la masse musculaire et osseuse au rythme d'environ un à deux pour cent par mois. Pour des missions vers Mars ou au-delà, cette dégradation pose un problème sérieux. La gravité artificielle par rotation d'un vaisseau est une solution théorique étudiée depuis des décennies. En faisant tourner une structure cylindrique sur elle-même, la force centrifuge simulerait la pesanteur. Cette idée est aujourd'hui sérieusement envisagée par les ingénieurs spatiaux pour les vols de longue durée."},
@@ -366,49 +256,116 @@ const ARTICLES=[{t:"🌌 Trou noir",p:"Un trou noir est une région de l'espace 
 {t:"🌡️ Fond diffus cosmologique",p:"Le fond diffus cosmologique est le rayonnement thermique résiduel du Big Bang, émis environ trois cent quatre-vingt mille ans après la naissance de l'univers. À ce moment précis, l'univers avait suffisamment refroidi pour que les premiers atomes neutres se forment, rendant l'univers transparent à la lumière. Ce rayonnement originel, décalé vers les micro-ondes par l'expansion de l'univers, fut découvert accidentellement en 1965. Il représente la photographie la plus ancienne de l'univers."},
 {t:"🧊 Titan, lune de Saturne",p:"Titan est la plus grande lune de Saturne et le seul satellite connu dans le système solaire à posséder une atmosphère dense. Elle est essentiellement composée d'azote, avec des traces de méthane et d'éthane. Des lacs et des rivières y existent, non pas d'eau, mais de méthane liquide, à une température d'environ moins cent quatre-vingts degrés Celsius. La sonde Huygens s'y posa en janvier 2005, envoyant les premières images de sa surface brumeuse et orangée. Titan fascine les astrobiologistes pour sa chimie prébiotique potentielle."},
 {t:"🔺 Paradoxe des jumeaux",p:"Le paradoxe des jumeaux est l'une des conséquences les plus déroutantes de la relativité restreinte d'Einstein. Si l'un des deux jumeaux voyageait à une vitesse proche de celle de la lumière, puis revenait sur Terre, il serait plus jeune que son frère resté au sol. Le temps s'écoule différemment selon la vitesse de l'observateur, un phénomène appelé dilatation du temps. Cet effet a été mesuré avec des horloges atomiques embarquées sur des avions. Les satellites GPS corrigent d'ailleurs cette distorsion temporelle pour maintenir leur précision."}];
- 
+
 const WORDS=[{word:'représentatif',breakdown:'tif → ta-tif → en-ta-tif → pré-zen-ta-tif → re-pré-zen-ta-tif',s:6},{word:'vraisemblablement',breakdown:'ment → ble-ment → bla-ble-ment → sem-bla-ble-ment → vrai-sem-bla-ble-ment',s:6},{word:'imperméabilisation',breakdown:'tion → sa-tion → li-sa-tion → bi-li-sa-tion → a-bi-li-sa-tion → mé-a-bi-li-sa-tion → per-mé-a-bi-li-sa-tion → im-per-mé-a-bi-li-sa-tion',s:8},{word:'circonspection',breakdown:'tion → pec-tion → s-pec-tion → con-s-pec-tion → cir-con-s-pec-tion',s:5},{word:'perpendiculairement',breakdown:'ment → re-ment → lai-re-ment → cu-lai-re-ment → di-cu-lai-re-ment → pen-di-cu-lai-re-ment → per-pen-di-cu-lai-re-ment',s:7},{word:'désagréablement',breakdown:'ment → ble-ment → a-ble-ment → gré-a-ble-ment → sa-gré-a-ble-ment → dé-sa-gré-a-ble-ment',s:6},{word:'incompréhensible',breakdown:'ble → si-ble → en-si-ble → h-en-si-ble → pré-h-en-si-ble → com-pré-h-en-si-ble → in-com-pré-h-en-si-ble',s:7},{word:'prestidigitateur',breakdown:'teur → ta-teur → gi-ta-teur → di-gi-ta-teur → ti-di-gi-ta-teur → res-ti-di-gi-ta-teur → pres-ti-di-gi-ta-teur',s:7},{word:'anticonstitutionnellement',breakdown:'ment → le-ment → nel-le-ment → ion-nel-le-ment → tu-tion-nel-le-ment → sti-tu-tion-nel-le-ment → con-sti-tu-tion-nel-le-ment → ti-con-sti-tu-tion-nel-le-ment → an-ti-con-sti-tu-tion-nel-le-ment',s:9},{word:'déresponsabilisation',breakdown:'tion → sa-tion → li-sa-tion → bi-li-sa-tion → sa-bi-li-sa-tion → pon-sa-bi-li-sa-tion → res-pon-sa-bi-li-sa-tion → dé-res-pon-sa-bi-li-sa-tion',s:8},{word:'synchronisation',breakdown:'tion → sa-tion → ni-sa-tion → ro-ni-sa-tion → chro-ni-sa-tion → syn-chro-ni-sa-tion',s:6},{word:'particulièrement',breakdown:'ment → re-ment → liè-re-ment → cu-liè-re-ment → ti-cu-liè-re-ment → par-ti-cu-liè-re-ment',s:6},{word:'extraordinairement',breakdown:'ment → re-ment → nai-re-ment → di-nai-re-ment → or-di-nai-re-ment → ra-or-di-nai-re-ment → ex-tra-or-di-nai-re-ment',s:7},{word:'développement',breakdown:'ment → pe-ment → lop-pe-ment → ve-lop-pe-ment → dé-ve-lop-pe-ment',s:5},{word:'invraisemblable',breakdown:'ble → a-ble → bla-ble → sem-bla-ble → vrai-sem-bla-ble → in-vrai-sem-bla-ble',s:6}];
- 
-const SK='elocoach_v4';
+
+// ===== STATE =====
+const SK='elocoach_v5';
 const today=new Date();
 const todayKey=today.toDateString();
-const dom=today.getDate()-1;
+const dom=today.getDate()-1; // 0-based pour index article
 const doy=Math.floor((today-new Date(today.getFullYear(),0,0))/86400000);
 const DAYS=['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
 const MONTHS=['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
- 
-let state={checks:[false,false,false],journal:[],debitEntries:[],words:[],timerRunning:false,timerSeconds:0,articleExpanded:false,cachedDay:null,cachedV:null,cachedW:null,lastVIdx:-1,lastWIdx:-1,usedV:[],usedW:[],bonusSessions:[],totalBonusEver:0,favs:[]};
+
+let state={
+  checks:[false,false,false],
+  // sessions = tableau de {date: 'todayKey', exercisesDone: N, bonusDone: N}
+  sessions:[],
+  bonusSessions:[],totalBonusEver:0,
+  articleExpanded:false,
+  cachedDay:null,cachedV:null,cachedW:null,
+  lastVIdx:-1,lastWIdx:-1,usedV:[],usedW:[],
+  favs:[]
+};
+
 function ls(){try{const s=localStorage.getItem(SK);if(s)state={...state,...JSON.parse(s)};}catch(e){}}
 function ss(){try{localStorage.setItem(SK,JSON.stringify(state));}catch(e){}}
 ls();
- 
-if(state.cachedDay!==todayKey){state.checks=[false,false,false];state.cachedV=null;state.cachedW=null;state.cachedDay=todayKey;state.bonusSessions=[];state.articleExpanded=false;state.usedV=[];state.usedW=[];ss();}
- 
+
+// Reset quotidien
+if(state.cachedDay!==todayKey){
+  // Sauvegarder la session d'hier si des exercices avaient été cochés
+  if(state.cachedDay && state.checks.some(Boolean)){
+    saveSessionForDay(state.cachedDay, state.checks.filter(Boolean).length);
+  }
+  state.checks=[false,false,false];
+  state.cachedV=null;state.cachedW=null;
+  state.cachedDay=todayKey;
+  state.bonusSessions=[];
+  state.articleExpanded=false;
+  state.usedV=[];state.usedW=[];
+  ss();
+}
+
+function saveSessionForDay(dayKey, exercisesDone){
+  if(!state.sessions)state.sessions=[];
+  const existing=state.sessions.find(s=>s.date===dayKey);
+  if(existing){existing.exercisesDone=exercisesDone;}
+  else{state.sessions.push({date:dayKey,exercisesDone});}
+}
+
+// Calcul du numéro de jour (nombre de jours distincts pratiqués + aujourd'hui si au moins 1 exercice)
+function calcDayNumber(){
+  if(!state.sessions)state.sessions=[];
+  // Jours passés avec au moins 1 exercice
+  const pastDays=state.sessions.filter(s=>s.date!==todayKey&&s.exercisesDone>0).length;
+  // Aujourd'hui compte si au moins 1 exercice coché
+  const todayDone=state.checks.some(Boolean)?1:0;
+  return pastDays+todayDone+1; // +1 pour commencer à 1
+}
+
 document.getElementById('date-display').textContent=today.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
-document.getElementById('current-day').textContent=Math.min(90,(state.journal?.length||0)+1);
 document.getElementById('month-label').textContent=MONTHS[today.getMonth()];
- 
+
+function updateDayNumber(){
+  document.getElementById('current-day').textContent=Math.min(999,calcDayNumber());
+}
+updateDayNumber();
+
+// ===== STREAK =====
 function getMonday(){const d=new Date(today);d.setDate(d.getDate()-(d.getDay()+6)%7);d.setHours(0,0,0,0);return d;}
+
 function buildStreak(){
   const row=document.getElementById('streak-row');row.innerHTML='';
   const ti=(today.getDay()+6)%7;
+  const monday=getMonday();
   DAYS.forEach((d,i)=>{
     const el=document.createElement('div');el.className='streak-day';
-    const e=(state.journal||[]).find(j=>{const d2=new Date(j.date);return(d2.getDay()+6)%7===i&&d2>=getMonday();});
-    if(e){el.classList.add('done');el.textContent='✓';}else if(i===ti){el.classList.add('today');el.textContent=d;}else{el.classList.add('empty');el.textContent=d;}
+    // Calculer la date correspondant à ce jour de la semaine
+    const dayDate=new Date(monday);dayDate.setDate(monday.getDate()+i);
+    const dayKey=dayDate.toDateString();
+    // Vérifier si ce jour a été pratiqué
+    const isToday=i===ti;
+    const todayPracticed=isToday&&state.checks.some(Boolean);
+    const pastSession=state.sessions?.find(s=>s.date===dayKey&&s.exercisesDone>0);
+    if(pastSession||todayPracticed){el.classList.add('done');el.textContent='✓';}
+    else if(isToday){el.classList.add('today');el.textContent=d;}
+    else{el.classList.add('empty');el.textContent=d;}
     row.appendChild(el);
   });
 }
 buildStreak();
- 
-function toggleCheck(i){state.checks[i]=!state.checks[i];rCheck(i);updProg();ss();}
+
+// ===== CHECKS =====
+function toggleCheck(i){
+  state.checks[i]=!state.checks[i];
+  rCheck(i);updProg();
+  // Sauvegarder la session du jour à chaque modification
+  saveSessionForDay(todayKey,state.checks.filter(Boolean).length);
+  ss();
+  updateDayNumber();
+  buildStreak();
+}
 function rCheck(i){const el=document.getElementById('check-'+i);el.classList.toggle('done',state.checks[i]);el.innerHTML=state.checks[i]?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0f1117" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>':'';}
 state.checks.forEach((_,i)=>rCheck(i));
 function updProg(){const d=state.checks.filter(Boolean).length;document.getElementById('ex-count').textContent=d+'/3';document.getElementById('progress-fill').style.width=(d/3*100)+'%';document.getElementById('bonus-count-badge').textContent=state.bonusSessions?.length||0;}
 updProg();
- 
+
+// ===== UTILITAIRES =====
 function pickIdx(len,used,pref){let idx=pref!==undefined?pref:Math.floor(Math.random()*len);let t=0;while(used.includes(idx)&&t<len){idx=(idx+1)%len;t++;}return idx;}
- 
+
+// ===== VIRELANGUES =====
 let curVIdx=-1;
 function loadV(force=false){
   if(state.cachedV&&!force){curVIdx=state.lastVIdx;rV(state.cachedV,curVIdx);return;}
@@ -421,7 +378,8 @@ function rV(pair,idx){
   document.getElementById('star-btn').textContent=(state.favs||[]).includes(idx)?'⭐':'☆';
 }
 function reloadVirelangues(){loadV(true);}
- 
+
+// ===== FAVORIS =====
 function toggleFav(){
   if(!state.favs)state.favs=[];
   const idx=curVIdx;if(idx<0)return;
@@ -437,7 +395,8 @@ function rFavs(){
   list.innerHTML=favs.map(idx=>{const pair=VIRELANGUES[idx];return`<div class="fav-item"><div class="fav-text">${pair.map(v=>'"'+v+'"').join('<br>')}</div><button class="fav-remove" onclick="removeFav(${idx})">✕</button></div>`;}).join('');
 }
 function removeFav(idx){state.favs=(state.favs||[]).filter(i=>i!==idx);ss();rFavs();if(curVIdx===idx)document.getElementById('star-btn').textContent='☆';showToast('Retiré des favoris');}
- 
+
+// ===== ARTICLE =====
 function loadArticle(){
   const a=ARTICLES[dom%ARTICLES.length];
   document.getElementById('article-theme').textContent=a.t;
@@ -449,7 +408,8 @@ function toggleArticle(){
   state.articleExpanded=!state.articleExpanded;body.classList.toggle('expanded',state.articleExpanded);
   if(fade)fade.classList.toggle('hidden',state.articleExpanded);btn.textContent=state.articleExpanded?'Réduire ↑':'Lire la suite ↓';
 }
- 
+
+// ===== MOT DU JOUR =====
 let curWIdx=-1;
 function loadW(force=false){
   if(state.cachedW&&!force){curWIdx=state.lastWIdx;rW(state.cachedW);return;}
@@ -464,14 +424,17 @@ function rW(w){
   document.getElementById('difficulty-bar').innerHTML=Array.from({length:pips},(_,i)=>`<div class="difficulty-pip${i<filled?' filled':''}"></div>`).join('')+`<span style="font-size:11px;color:var(--text3);margin-left:8px;">${w.s} syllabes</span>`;
 }
 function reloadWord(){loadW(true);}
- 
+
+// Init exercices
 loadV();loadArticle();loadW();rFavs();
- 
+
+// ===== BONUS =====
 function addBonusSession(){
   const id=Date.now();
   const vi=pickIdx(VIRELANGUES.length,state.usedV);if(!state.usedV.includes(vi))state.usedV.push(vi);
   const wi=pickIdx(WORDS.length,state.usedW);if(!state.usedW.includes(wi))state.usedW.push(wi);
-  state.bonusSessions.push({id,vi,wi,checks:[false,false]});state.totalBonusEver=(state.totalBonusEver||0)+1;
+  state.bonusSessions.push({id,vi,wi,checks:[false,false]});
+  state.totalBonusEver=(state.totalBonusEver||0)+1;
   ss();rBonus();updProg();showToast('Session bonus ajoutée ⚡');
   setTimeout(()=>document.getElementById('bonus-'+id)?.scrollIntoView({behavior:'smooth',block:'center'}),100);
 }
@@ -487,83 +450,78 @@ function rBonus(){
   });
 }
 rBonus();
- 
-let timerInt=null;
-function toggleTimer(){
-  if(state.timerRunning){clearInterval(timerInt);state.timerRunning=false;document.getElementById('timer-btn').className='timer-btn start';document.getElementById('timer-btn').textContent='Reprendre';showDR(state.timerSeconds);}
-  else{state.timerRunning=true;document.getElementById('timer-btn').className='timer-btn stop';document.getElementById('timer-btn').textContent='Stop';document.getElementById('debit-result').classList.remove('show');timerInt=setInterval(()=>{state.timerSeconds++;const m=String(Math.floor(state.timerSeconds/60)).padStart(2,'0'),s=String(state.timerSeconds%60).padStart(2,'0');document.getElementById('timer-display').textContent=m+':'+s;},1000);}
+
+// ===== STATS =====
+function calcStreak(){
+  let streak=0,d=new Date(today);
+  for(let i=0;i<365;i++){
+    const key=d.toDateString();
+    const isToday=key===todayKey;
+    const practiced=isToday
+      ?state.checks.some(Boolean)
+      :(state.sessions||[]).some(s=>s.date===key&&s.exercisesDone>0);
+    if(practiced)streak++;
+    else break;
+    d.setDate(d.getDate()-1);
+  }
+  return streak;
 }
-function resetTimer(){clearInterval(timerInt);state.timerRunning=false;state.timerSeconds=0;document.getElementById('timer-display').textContent='00:00';document.getElementById('timer-btn').className='timer-btn start';document.getElementById('timer-btn').textContent='Démarrer';document.getElementById('debit-result').classList.remove('show');}
-function showDR(sec){document.getElementById('debit-result').classList.add('show');const dot=document.getElementById('debit-dot'),v=document.getElementById('debit-verdict'),a=document.getElementById('debit-advice');if(sec<25){dot.className='debit-dot fast';v.textContent='Débit rapide ('+sec+'s)';a.textContent='Objectif : 30–35s.';}else if(sec<=35){dot.className='debit-dot ok';v.textContent='Débit correct ('+sec+'s) ✓';a.textContent='Dans la zone cible.';}else{dot.className='debit-dot slow';v.textContent='Débit lent ('+sec+'s)';a.textContent='Relâche légèrement les pauses.';}}
- 
-let selScore=null,selQScore=null;
-function selectScore(btn,val){selScore=val;document.querySelectorAll('#score-row .score-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');}
-function selectQuickScore(btn,val){selQScore=val;document.querySelectorAll('#quick-score-row .score-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');}
-function toggleChip(el){el.classList.toggle('selected');}
-function toggleChipProg(el){el.classList.toggle('selected');}
- 
-function saveJournal(){
-  const blocages=[...document.querySelectorAll('#blocage-chips .chip.selected')].map(c=>c.textContent);
-  const progs=[...document.querySelectorAll('#prog-chips .chip.selected')].map(c=>c.textContent);
-  const wr=document.getElementById('words-input').value.trim();
-  const nw=wr?wr.split(',').map(w=>w.trim()).filter(Boolean):[];
-  const entry={date:new Date().toISOString(),score:selScore,blocages,blocageText:document.getElementById('blocage-text').value.trim(),progs,progText:document.getElementById('prog-text').value.trim(),words:nw,exercisesDone:state.checks.filter(Boolean).length,bonusDone:(state.bonusSessions||[]).filter(s=>s.checks[0]&&s.checks[1]).length};
-  if(!state.journal)state.journal=[];
-  const idx=state.journal.findIndex(j=>new Date(j.date).toDateString()===todayKey);
-  if(idx>=0)state.journal[idx]=entry;else state.journal.push(entry);
-  nw.forEach(w=>{if(!state.words)state.words=[];if(!state.words.find(sw=>sw.word.toLowerCase()===w.toLowerCase()))state.words.push({word:w,date:new Date().toISOString()});});
-  ss();showToast('Bilan sauvegardé ✓');buildStreak();rDash();
-}
-function saveDebitEntry(){
-  if(!state.timerSeconds&&!selQScore){showToast("Lance le timer d'abord");return;}
-  if(!state.debitEntries)state.debitEntries=[];
-  const entry={date:new Date().toISOString(),time:state.timerSeconds||null,score:selQScore};
-  const idx=state.debitEntries.findIndex(e=>new Date(e.date).toDateString()===todayKey);
-  if(idx>=0)state.debitEntries[idx]=entry;else state.debitEntries.push(entry);
-  ss();showToast('Test enregistré ✓');rDash();
-}
- 
+
 function rDash(){
-  const j=state.journal||[],w=state.words||[],d=state.debitEntries||[];
-  const scores=j.filter(x=>x.score).map(x=>x.score);
-  const avg=scores.length?(scores.reduce((a,b)=>a+b,0)/scores.length).toFixed(1):'—';
+  const sessions=state.sessions||[];
+  const totalDays=sessions.filter(s=>s.exercisesDone>0).length+(state.checks.some(Boolean)?1:0);
+  const completeDays=sessions.filter(s=>s.exercisesDone>=3).length+(state.checks.filter(Boolean).length>=3?1:0);
+
   document.getElementById('stat-streak').textContent=calcStreak();
-  document.getElementById('stat-score').textContent=avg;
-  document.getElementById('stat-sessions').textContent=j.filter(x=>x.exercisesDone>=3).length;
+  document.getElementById('stat-days').textContent=totalDays;
+  document.getElementById('stat-sessions').textContent=completeDays;
   document.getElementById('stat-bonus').textContent=state.totalBonusEver||0;
-  rScoreChart(j);rDebitChart(d);rWordsList(w);
+
+  rActivityChart();
 }
-function calcStreak(){let s=0,d=new Date();for(let i=0;i<90;i++){if((state.journal||[]).find(j=>new Date(j.date).toDateString()===d.toDateString()))s++;else break;d.setDate(d.getDate()-1);}return s;}
-function rScoreChart(j){
-  const svg=document.getElementById('chart-svg'),labels=document.getElementById('chart-labels'),last7=[];
-  for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const e=j.find(x=>new Date(x.date).toDateString()===d.toDateString());last7.push({day:DAYS[(d.getDay()+6)%7],score:e?.score||null});}
+
+function rActivityChart(){
+  const svg=document.getElementById('chart-svg');
+  const labels=document.getElementById('chart-labels');
+  const last7=[];
+  for(let i=6;i>=0;i--){
+    const d=new Date();d.setDate(d.getDate()-i);
+    const key=d.toDateString();
+    const isToday=key===todayKey;
+    let done=0;
+    if(isToday){done=state.checks.filter(Boolean).length;}
+    else{const s=(state.sessions||[]).find(x=>x.date===key);done=s?s.exercisesDone:0;}
+    last7.push({day:DAYS[(d.getDay()+6)%7],done});
+  }
   labels.innerHTML=last7.map(d=>`<span>${d.day}</span>`).join('');
-  drawChart(svg,last7.map(d=>d.score),1,5,'#e8ff47');
+  drawChart(svg,last7.map(d=>d.done),0,3,'#e8ff47');
 }
-function rDebitChart(entries){drawChart(document.getElementById('debit-chart'),entries.slice(-7).map(e=>e.time||null),15,50,'#47c2ff',[30,35]);}
-function drawChart(svg,data,min,max,color,tr){
+
+function drawChart(svg,data,min,max,color){
   const W=340,H=100,P=10;
-  if(!data.filter(Boolean).length){svg.innerHTML='<text x="170" y="55" fill="#5a6080" font-size="12" text-anchor="middle" font-family="DM Sans">Pas encore de données</text>';return;}
-  const vd=data.map((v,i)=>({v,i})).filter(d=>d.v!==null);
+  if(!data.some(v=>v>0)){svg.innerHTML='<text x="170" y="55" fill="#5a6080" font-size="12" text-anchor="middle" font-family="DM Sans">Pas encore de données</text>';return;}
+  const vd=data.map((v,i)=>({v,i})).filter(d=>d.v>0);
   const xs=(W-P*2)/Math.max(data.length-1,1);
   const ys=v=>H-P-((v-min)/(max-min))*(H-P*2);
   const gid='g'+color.replace('#','');
   let h=`<defs><linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${color}" stop-opacity="0.3"/><stop offset="100%" stop-color="${color}" stop-opacity="0"/></linearGradient></defs>`;
-  if(tr){const y1=ys(tr[1]),y2=ys(tr[0]);h+=`<rect x="${P}" y="${y1}" width="${W-P*2}" height="${y2-y1}" fill="rgba(232,255,71,0.07)" rx="2"/>`;}
-  [1,2,3,4,5].forEach(v=>{const y=ys(min+(max-min)/4*(v-1));h+=`<line x1="${P}" y1="${y}" x2="${W-P}" y2="${y}" stroke="#2a3050" stroke-width="0.5"/>`;});
+  [1,2,3].forEach(v=>{const y=ys(v);h+=`<line x1="${P}" y1="${y}" x2="${W-P}" y2="${y}" stroke="#2a3050" stroke-width="0.5"/>`;});
   if(vd.length>=2){const pd=vd.map((d,i)=>(i===0?'M':'L')+(P+d.i*xs)+','+ys(d.v)).join(' ');h+=`<path d="${pd} L${P+vd[vd.length-1].i*xs},${H-P} L${P+vd[0].i*xs},${H-P} Z" fill="url(#${gid})"/><path d="${pd}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;}
-  vd.forEach(d=>{h+=`<circle cx="${P+d.i*xs}" cy="${ys(d.v)}" r="4" fill="${color}" stroke="#0f1117" stroke-width="2"/><text x="${P+d.i*xs}" y="${ys(d.v)-10}" fill="${color}" font-size="9" text-anchor="middle" font-family="Syne">${d.v}</text>`;});
+  vd.forEach(d=>{h+=`<circle cx="${P+d.i*xs}" cy="${ys(d.v)}" r="4" fill="${color}" stroke="#0f1117" stroke-width="2"/><text x="${P+d.i*xs}" y="${ys(d.v)-10}" fill="${color}" font-size="9" text-anchor="middle" font-family="Syne">${d.v}/3</text>`;});
   svg.innerHTML=h;
 }
-function rWordsList(words){
-  const c=document.getElementById('words-list');
-  if(!words.length){c.innerHTML='<div style="font-size:14px;color:var(--text3);text-align:center;padding:10px;">Aucun mot enregistré encore.</div>';return;}
-  c.innerHTML=words.slice(-10).reverse().map(w=>`<div class="word-item"><div><div class="word-name">${w.word}</div><div class="word-date">${new Date(w.date).toLocaleDateString('fr-FR')}</div></div><span class="word-badge">à travailler</span></div>`).join('');
+
+// ===== NAV =====
+function showScreen(name,btn){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('screen-'+name).classList.add('active');
+  btn.classList.add('active');
+  if(name==='dash')rDash();
+  if(name==='favs')rFavs();
 }
- 
-function showScreen(name,btn){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));document.getElementById('screen-'+name).classList.add('active');btn.classList.add('active');if(name==='dash')rDash();if(name==='favs')rFavs();}
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
- 
+
 rDash();
 </script>
 </body>
