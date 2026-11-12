@@ -72,6 +72,14 @@
   .difficulty-bar{display:flex;gap:3px;margin-top:6px;align-items:center;}
   .difficulty-pip{width:8px;height:8px;border-radius:2px;background:var(--surface2);}
   .difficulty-pip.filled{background:var(--accent3);}
+  .day-nav{display:flex;align-items:center;gap:10px;margin-top:10px;}
+  .day-nav span{color:var(--text3);font-size:13px;min-width:0;}
+  .day-nav-btn{background:var(--surface2);border:1px solid var(--border);color:var(--text2);border-radius:10px;width:34px;height:30px;font-size:16px;line-height:1;cursor:pointer;flex-shrink:0;}
+  .day-nav-btn:disabled{opacity:0.3;cursor:default;}
+  .past-banner{display:none;margin-top:12px;background:var(--surface2);border:1px solid var(--accent);color:var(--accent);border-radius:12px;padding:10px 12px;font-size:13px;cursor:pointer;}
+  .streak-day.clickable{cursor:pointer;}
+  .streak-day.viewing{outline:2px solid var(--accent2,#47c8ff);outline-offset:2px;}
+  .past-mode .bonus-zone{display:none !important;}
   .reload-btn{background:none;border:1px solid var(--border);color:var(--text3);border-radius:20px;padding:4px 10px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;}
   .star-btn{background:none;border:none;cursor:pointer;font-size:20px;padding:2px 4px;line-height:1;transition:transform 0.15s;flex-shrink:0;}
   .star-btn:active{transform:scale(1.4);}
@@ -105,7 +113,12 @@
   <div class="header">
     <div class="header-tag">Jour <span id="current-day">1</span> · <span id="month-label"></span></div>
     <h1>Bonjour,<br>c'est l'heure<br>de pratiquer.</h1>
-    <p id="date-display" style="margin-top:10px;color:var(--text3);font-size:13px;"></p>
+    <div class="day-nav">
+      <button class="day-nav-btn" id="prev-day" onclick="shiftDay(-1)" aria-label="Jour précédent">‹</button>
+      <span id="date-display"></span>
+      <button class="day-nav-btn" id="next-day" onclick="shiftDay(1)" aria-label="Jour suivant">›</button>
+    </div>
+    <div class="past-banner" id="past-banner" onclick="setView(0)">Tu consultes un jour passé · ↩ Revenir à aujourd'hui</div>
   </div>
 
   <div class="card">
@@ -116,7 +129,7 @@
       <span id="ex-count" style="font-family:'Syne',sans-serif;font-weight:700;font-size:16px;color:var(--accent);">0/2</span>
     </div>
     <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-fill" style="width:0%"></div></div>
-    <div style="margin-top:10px;display:flex;justify-content:space-between;align-items:center;">
+    <div class="bonus-zone" style="margin-top:10px;display:flex;justify-content:space-between;align-items:center;">
       <span style="font-size:12px;color:var(--text3);">Sessions bonus aujourd'hui</span>
       <span id="bonus-count-badge" style="font-family:'Syne',sans-serif;font-weight:700;font-size:14px;color:var(--accent4);">0</span>
     </div>
@@ -154,6 +167,7 @@
   </div>
 
   <!-- Sessions bonus -->
+  <div class="bonus-zone">
   <div class="bonus-divider">
     <div class="bonus-divider-line"></div>
     <div class="bonus-divider-label">⚡ Sessions bonus</div>
@@ -164,6 +178,7 @@
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
     Ajouter une session
   </button>
+  </div>
 </div>
 
 <!-- STATS -->
@@ -307,15 +322,19 @@ let state={
   articleExpanded:false,
   cachedDay:null,cachedV:null,cachedA:null,
   lastVIdx:-1,usedV:[],usedA:[],
-  favs:[]
+  favs:[],
+  history:{} // {dateKey:{v:indexVirelangue,a:'astro:3',checks:[bool,bool]}}
 };
 
 function ls(){try{const s=localStorage.getItem(SK);if(s)state={...state,...JSON.parse(s)};}catch(e){}}
-function ss(){try{localStorage.setItem(SK,JSON.stringify(state));}catch(e){}}
+function ss(){if(state.cachedDay===todayKey&&state.history)state.history[todayKey]={v:state.lastVIdx,a:state.cachedA,checks:[...state.checks]};try{localStorage.setItem(SK,JSON.stringify(state));}catch(e){}}
 ls();
 
 // Reset quotidien
+if(!state.history)state.history={};
 if(state.cachedDay!==todayKey){
+  // Archiver le contenu de la veille pour pouvoir le consulter
+  if(state.cachedDay&&!state.history[state.cachedDay]&&state.lastVIdx>=0)state.history[state.cachedDay]={v:state.lastVIdx,a:state.cachedA||null,checks:state.checks.slice(0,2)};
   // Sauvegarder la session d'hier si des exercices avaient été cochés
   if(state.cachedDay && state.checks.some(Boolean)){
     saveSessionForDay(state.cachedDay, state.checks.filter(Boolean).length);
@@ -349,7 +368,6 @@ function calcDayNumber(){
   return pastDays+todayDone+1; // +1 pour commencer à 1
 }
 
-document.getElementById('date-display').textContent=today.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
 document.getElementById('month-label').textContent=MONTHS[today.getMonth()];
 
 function updateDayNumber(){
@@ -373,28 +391,28 @@ function buildStreak(){
     const isToday=i===ti;
     const todayPracticed=isToday&&state.checks.some(Boolean);
     const pastSession=state.sessions?.find(s=>s.date===dayKey&&s.exercisesDone>0);
+    const off=Math.round((dayDate-new Date(today.getFullYear(),today.getMonth(),today.getDate()))/86400000);
+    if(off<=0){el.classList.add('clickable');el.onclick=()=>setView(off);}
+    if(off===viewOffset&&viewOffset!==0)el.classList.add('viewing');
     if(pastSession||todayPracticed){el.classList.add('done');el.textContent='✓';}
     else if(isToday){el.classList.add('today');el.textContent=d;}
     else{el.classList.add('empty');el.textContent=d;}
     row.appendChild(el);
   });
 }
-buildStreak();
 
 // ===== CHECKS =====
 function toggleCheck(i){
-  state.checks[i]=!state.checks[i];
+  const c=curChecks();c[i]=!c[i];
   rCheck(i);updProg();
-  // Sauvegarder la session du jour à chaque modification
-  saveSessionForDay(todayKey,state.checks.filter(Boolean).length);
+  // Sauvegarder la session du jour consulté à chaque modification
+  saveSessionForDay(viewKey(),c.filter(Boolean).length);
   ss();
   updateDayNumber();
   buildStreak();
 }
-function rCheck(i){const el=document.getElementById('check-'+i);el.classList.toggle('done',state.checks[i]);el.innerHTML=state.checks[i]?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0f1117" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>':'';}
-state.checks.forEach((_,i)=>rCheck(i));
-function updProg(){const d=state.checks.filter(Boolean).length;document.getElementById('ex-count').textContent=d+'/2';document.getElementById('progress-fill').style.width=(d/2*100)+'%';document.getElementById('bonus-count-badge').textContent=state.bonusSessions?.length||0;}
-updProg();
+function rCheck(i){const c=curChecks();const el=document.getElementById('check-'+i);el.classList.toggle('done',c[i]);el.innerHTML=c[i]?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0f1117" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>':'';}
+function updProg(){const d=curChecks().filter(Boolean).length;document.getElementById('ex-count').textContent=d+'/2';document.getElementById('progress-fill').style.width=(d/2*100)+'%';document.getElementById('bonus-count-badge').textContent=state.bonusSessions?.length||0;}
 
 // ===== UTILITAIRES =====
 function pickIdx(len,used,pref){let idx=pref!==undefined?pref:Math.floor(Math.random()*len);let t=0;while(used.includes(idx)&&t<len){idx=(idx+1)%len;t++;}return idx;}
@@ -411,7 +429,7 @@ function rV(pair,idx){
   document.getElementById('virelangues-text').innerHTML=pair.map(v=>`"${v}"`).join('<br>');
   document.getElementById('star-btn').textContent=(state.favs||[]).includes(idx)?'⭐':'☆';
 }
-function reloadVirelangues(){loadV(true);}
+function reloadVirelangues(){if(viewOffset===0)return loadV(true);const h=pastDay();h.v=pickIdx(VIRELANGUES.length,[h.v]);ss();renderView();}
 
 // ===== FAVORIS =====
 function toggleFav(){
@@ -436,7 +454,7 @@ const ART={astro:ASTRO,stoic:STOIC};
 function artKey(c,i){return c+':'+i;}
 function getArt(k){const[c,i]=k.split(':');return ART[c][+i];}
 function getArtSafe(k){try{return getArt(k)||null;}catch(e){return null;}}
-function dayArticle(){const c=doy%2===0?'astro':'stoic';return artKey(c,Math.floor(doy/2)%ART[c].length);}
+function dayArticle(y=doy){const c=y%2===0?'astro':'stoic';return artKey(c,Math.floor(y/2)%ART[c].length);}
 function randomArticle(exclude){
   const all=[];['astro','stoic'].forEach(c=>ART[c].forEach((_,i)=>{const k=artKey(c,i);if(!exclude.includes(k))all.push(k);}));
   return all.length?all[Math.floor(Math.random()*all.length)]:dayArticle();
@@ -446,7 +464,10 @@ function loadArticle(force=false){
   else if(!state.cachedA||!getArtSafe(state.cachedA))state.cachedA=dayArticle();
   if(!state.usedA.includes(state.cachedA))state.usedA.push(state.cachedA);
   ss();
-  const a=getArt(state.cachedA);
+  showArticle(state.cachedA);
+}
+function showArticle(k){
+  const a=getArt(k);
   document.getElementById('article-theme').textContent=a.t;
   const body=document.getElementById('article-body');
   body.innerHTML=`<p style="position:relative;z-index:1">${a.p}</p><div class="article-fade" id="article-fade"></div>`;
@@ -454,15 +475,61 @@ function loadArticle(force=false){
   document.getElementById('article-fade').classList.toggle('hidden',!!state.articleExpanded);
   document.getElementById('read-btn').textContent=state.articleExpanded?'Réduire ↑':'Lire la suite ↓';
 }
-function reloadArticle(){loadArticle(true);}
+function reloadArticle(){if(viewOffset===0)return loadArticle(true);const h=pastDay();h.a=randomArticle([h.a]);ss();renderView();}
 function toggleArticle(){
   const body=document.getElementById('article-body'),fade=document.getElementById('article-fade'),btn=document.getElementById('read-btn');
   state.articleExpanded=!state.articleExpanded;body.classList.toggle('expanded',state.articleExpanded);
   if(fade)fade.classList.toggle('hidden',state.articleExpanded);btn.textContent=state.articleExpanded?'Réduire ↑':'Lire la suite ↓';
 }
 
+// ===== NAVIGATION ENTRE LES JOURS =====
+let viewOffset=0; // 0 = aujourd'hui, -1 = hier, etc.
+const MAX_BACK=365;
+function dateFor(off){const d=new Date(today.getFullYear(),today.getMonth(),today.getDate()+off,12);return d;}
+function viewKey(){return viewOffset===0?todayKey:dateFor(viewOffset).toDateString();}
+function doyOf(d){return Math.round((new Date(d.getFullYear(),d.getMonth(),d.getDate(),12)-new Date(d.getFullYear(),0,0,12))/86400000);}
+function pastDay(){
+  const d=dateFor(viewOffset),k=d.toDateString();
+  let h=state.history[k];
+  if(!h){
+    // Jour antérieur à l'historique : contenu reconstitué, cases déduites du nombre d'exercices faits
+    const n=Math.min(2,((state.sessions||[]).find(s=>s.date===k)||{}).exercisesDone||0),y=doyOf(d);
+    h=state.history[k]={v:y%VIRELANGUES.length,a:dayArticle(y),checks:[n>=1,n>=2]};
+  }
+  if(!getArtSafe(h.a||''))h.a=dayArticle(doyOf(d));
+  if(!VIRELANGUES[h.v])h.v=doyOf(d)%VIRELANGUES.length;
+  return h;
+}
+function curChecks(){return viewOffset===0?state.checks:pastDay().checks;}
+function renderNav(){
+  const d=viewOffset===0?today:dateFor(viewOffset);
+  let txt=d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
+  if(viewOffset===-1)txt='Hier · '+txt;
+  if(d.getFullYear()!==today.getFullYear())txt+=' '+d.getFullYear();
+  document.getElementById('date-display').textContent=txt;
+  document.getElementById('prev-day').disabled=viewOffset<=-MAX_BACK;
+  document.getElementById('next-day').disabled=viewOffset>=0;
+  document.getElementById('past-banner').style.display=viewOffset===0?'none':'block';
+  document.getElementById('screen-home').classList.toggle('past-mode',viewOffset!==0);
+}
+function renderView(){
+  renderNav();
+  if(viewOffset===0){loadV();loadArticle();}
+  else{
+    const h=pastDay();curVIdx=h.v;rV(VIRELANGUES[h.v],h.v);
+    state.articleExpanded=false;showArticle(h.a);
+  }
+  [0,1].forEach(rCheck);updProg();buildStreak();
+}
+function setView(off){
+  viewOffset=Math.max(-MAX_BACK,Math.min(0,off));
+  if(viewOffset===0)state.articleExpanded=false;
+  renderView();ss();
+}
+function shiftDay(delta){setView(viewOffset+delta);}
+
 // Init exercices
-loadV();loadArticle();rFavs();
+renderView();rFavs();
 
 // ===== BONUS =====
 function addBonusSession(){
